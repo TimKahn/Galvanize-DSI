@@ -1,0 +1,239 @@
+.. review (powerbayes)
+
+
+Review
+====================================================
+
+
+Z-test
+-----------------------------------------------
+
+One sample test for population mean
+
+   * **Distribution** The Z-test uses a normal distibution
+      .. math::
+         H_0: \mu = \mu_{0}, \sigma = \sigma_{0}
+	 
+   * **test statistic**
+      .. math::
+         Z=\frac{\bar{x}-\mu_{0}}{\sigma_{0}/\sqrt{n}}
+
+   * **95% CI**
+      .. math::
+         \bar{x} \pm \big( Z_{1-\alpha / 2} \big) \big( \frac{\sigma}{\sqrt{n}} \big)
+
+   * **p-value (2 sided)**
+      .. math::
+         :nowrap:
+	 
+	 \begin{eqnarray}
+	 \textrm{If } Z &<& 0 \textrm{ then } p = 2 \times \Phi(Z)\\
+         \textrm{If } Z &>& 0 \textrm{ then } p = 2 \times (1- \Phi(Z))
+	 \end{eqnarray}
+	    	 
+   * **Power**
+      .. math::
+         1-\beta = \Phi \bigg[ Z_{\alpha / 2} + \frac{\mu_{0} - \mu_{1}} {\sigma} \sqrt{n} \bigg]
+
+   * **Sample size**
+      .. math::
+         n = \frac{ \sigma^{2} \big( Z_{1-\beta} + Z_{1-\alpha / 2}  \big)^{2} } {(\mu_{0} - \mu_{1})^{2}}
+
+We are going to be talking about power, but first do we remember how to calculate some of those pieces?	 
+
+Recall that a **critical value** is the point (or points) on the scale
+of the test statistic beyond which we reject the null hypothesis, and
+is derived from the level of significance $\alpha$ of the test.
+
+  1. Decide on hypothesis test
+  2. Collect data
+  3. Calculate the test statistic
+  4. Calculate the *p*-value
+
+A cheat sheet for working with hypothesis tests
+
++-------------------------------------------+-------------------------------------+-----------------------------+
+| Description                               | Python                              | R                           |
++===========================================+=====================================+=============================+
+| Cumulative distribution function (CDF)    | stats.norm.cdf(1.96) = 0.975        | pnorm(1.96) = 0.975         |
++-------------------------------------------+-------------------------------------+-----------------------------+
+| Inverse of CDF (Percent point function)   | stats.norm.ppf(0.975) = 1.96        | qnorm(0.975) = 1.96         |
++-------------------------------------------+-------------------------------------+-----------------------------+
+| Evaluate the PDF                          | stats.norm.pdf(1.96) = 0.05         | dnorm(1.96) = 0.05          |
++-------------------------------------------+-------------------------------------+-----------------------------+
+| Calculate a 2-sided pvalue with Z = 1.99  | 2(1 - s.norm.cdf(1.99)) = 0.047     | 2(1-  pnorm(1.99)) = 0.047  |
++-------------------------------------------+-------------------------------------+-----------------------------+
+
+
+Two sided p-value if Z > 0 2 * (1-Phi(Z)) else 2 * (Phi(Z))
+One sided p-value if Z > 0 (1-Phi(Z)) else (Phi(Z))
+Phi is the standard notation for the CDF
+
+     
+Inverse of the cdf (percent point function)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>> import scipy.stats as scs
+>>> alpha = 0.05
+>>> z = scs.norm.ppf(1-(alpha))
+>>> print("z=%s"%(round(z,2)))
+z=1.64
+
+So the CDF associated with that **critical value**
+
+>>> phi_z = scs.norm.cdf(z)
+>>> print("phi_z=%s"%(phi_z))
+phi_z=0.95
+
+
+.. topic:: QUESTION: Assume X follows a normal...
+   
+   What is the :math:`P(90 < X < 95)` where mu = 80, sigma = 12?
+
+
+.. topic:: QUESTION: So we found that :math:`Z= 2.0`
+
+   What is the 2-sided *p*-value associated with that critical value?
+	  
+
+The coin flip example
+-----------------------------------
+
+Starting with some data we want to use statsitics to answer certain kinds of questions:
+
+  * How well does the data match some assumed (null) distribution?
+  * If it doesn’t match well can we estimate the parameters to approximate it?
+  * How accurate are the parameter estimates?
+  * and more...
+    
+This is your toolkit
+
+  * Least squeares
+  * Numerical optimization
+  * **maximum likelihood**
+  * Expectation maximization (EM)
+  * Monte Carlo methods
+  * Variational methods
+  * **Simulation of null distribution** (bootstrap, permutation)
+  * **Estimation of posterior density (Monte Carlo integration, MCMC)**
+
+.. code-block:: python
+
+   import numpy as np
+   import matplotlib.pyplot as plt
+   import scipy.stats as st
+
+   n = 100
+   pcoin = 0.62 # actual value of p for coin
+   results = st.bernoulli(pcoin).rvs(n)
+   h = sum(results)
+   print("we observed %s heads out of %s"%(h,n))
+
+ 
+.. code-block:: none
+
+   we observed 67 heads out of 100
+   The expected distribution for a fair coin is mu=50.0, sd=5.0
+
+The **Expected distribution** for fair coin
+
+.. code-block:: python
+
+   p = 0.5
+   rv = st.binom(n,p)
+   mu = rv.mean()
+   sd = rv.std()
+   print("The expected distribution for a fair coin is mu=%s, sd=%s"%(mu,sd))
+
+.. code-block:: none
+
+   The expected distribution for a fair coin is mu=50.0, sd=5.0
+
+**Hypothesis testing**
+
+If we move into a hypothesis testing framework we can use the **binomial test**
+
+.. code-block:: python
+
+   print("binomial test - %s"%st.binom_test(h, n, p))
+
+.. code-block:: none
+
+   binomial test - 0.000873719836912
+   
+or a **normal approximation for binomal** (Z-test with continuity correction)
+
+.. code-block:: python
+
+   z = (h-0.5-mu)/sd
+   print("normal approx for binomial - %s"%(2*(1 - st.norm.cdf(z))))
+
+.. code-block:: none
+
+   normal approx for binomial - 0.000966848284768
+
+**Simulation**
+   
+We **can use simulation** to test things as well
+
+.. code-block:: python
+
+   nsamples = 100000
+   xs = np.random.binomial(n, p, nsamples)
+   print("simulation p-value - %s"%(2*np.sum(xs >= h)/(xs.size + 0.0)))
+
+.. code-block:: none   
+
+   simulation p-value - 0.00062
+
+**Maximum likelihood estimation (MLE)**
+
+.. code-block:: python
+
+   print("Maximum likelihood %s"%(np.sum(results)/float(len(results))))
+   bs_samples = np.random.choice(results, (nsamples, len(results)), replace=True)
+   bs_ps = np.mean(bs_samples, axis=1)
+   bs_ps.sort()
+   print("Bootstrap CI: (%.4f, %.4f)" % (bs_ps[int(0.025*nsamples)], bs_ps[int(0.975*nsamples)]))
+
+.. code-block:: none
+
+   Maximum likelihood 0.67
+   Bootstrap CI: (0.5800, 0.7600)
+
+**Bayesian estimation**
+   
+The **Bayesian approach** directly estimates the posterior
+distribution, from which all other point/interval statistics can be estimated.
+
+.. code-block:: python
+		
+   fig  = plt.figure()
+   ax = fig.add_subplot(111)
+
+   a, b = 10, 10
+   prior = st.beta(a, b)
+   post = st.beta(h+a, n-h+b)
+   ci = post.interval(0.95)
+   map_ = (h+a-1.0)/(n+a+b-2.0)
+
+   xs = np.linspace(0, 1, 100)
+   ax.plot(prior.pdf(xs), label='Prior')
+   ax.plot(post.pdf(xs), label='Posterior')
+   ax.axvline(mu, c='red', linestyle='dashed', alpha=0.4)
+   ax.set_xlim([0, 100])
+   ax.axhline(0.3, ci[0], ci[1], c='black', linewidth=2, label='95% CI');
+   ax.axvline(n*map_, c='blue', linestyle='dashed', alpha=0.4)
+   ax.legend()
+   plt.savefig("coin-toss.png")
+   
+.. figure:: coin-toss.png
+   :scale: 75%
+   :align: center
+   :alt: coin-toss
+   :figclass: align-center
+						
+
+.. note:: The above calculations have simple analytic solutions. For
+   most real life problems an appropriate model is generally more
+   complex and more complex models statistical models make use of more
+   advanced numerical methods and simulations.

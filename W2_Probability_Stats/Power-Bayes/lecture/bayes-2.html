@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PyMC3 &mdash; Power calculation and Bayes 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Power calculation and Bayes 1.0 documentation" href="index.html"/>
+        <link rel="prev" title="Bayesian Inference" href="bayes-1.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Power calculation and Bayes
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="review.html">Review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="power-calculation.html">Power calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r-intro.html">An introduction to R</a></li>
+<li class="toctree-l1"><a class="reference internal" href="individual.html">Individual assignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional-programming.html">Functional programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bayes-1.html">Bayesian Inference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PyMC3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#coin-flip-example-again">Coin flip example... again</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conjugate-prior">Conjugate prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#switchpoint-analysis">Switchpoint analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pymc">PyMC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#markov-chain-monte-carlo-mcmc">Markov Chain Monte Carlo (MCMC)</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Power calculation and Bayes</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>PyMC3</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/bayes-2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pymc3">
+<h1>PyMC3<a class="headerlink" href="#pymc3" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><ul class="simple">
+<li>Think of the posterior as our <em>degree of belief</em> given the evidence</li>
+<li><span class="math">\(P(A)\)</span>: The coin has a 50 percent chance of being
+Heads. <span class="math">\(P(A | X)\)</span>: You look at the coin, observe a Heads
+has landed, denote this information <span class="math">\(X\)</span>, and trivially
+assign probability 1.0 to Heads and 0.0 to Tails.</li>
+<li><span class="math">\(P(A)\)</span>: This big, complex code likely has a bug in
+it. <span class="math">\(P(A | X)\)</span>: The code passed all <span class="math">\(X\)</span> tests; there
+still might be a bug, but it is less likely now.</li>
+<li><span class="math">\(P(A)\)</span>: The patient could have any number of
+diseases. <span class="math">\(P(A | X)\)</span>: A blood test generated evidence
+<span class="math">\(X\)</span>, ruling out some diseases.</li>
+</ul>
+</div></blockquote>
+<div class="section" id="coin-flip-example-again">
+<h2>Coin flip example... again<a class="headerlink" href="#coin-flip-example-again" title="Permalink to this headline">¶</a></h2>
+<p>Lets imagine we did not know the probability of a coin flip.  We think there is some ratio <span class="math">\(p\)</span>, but we have no prior belief.</p>
+<div class="align-center figure">
+<a class="reference internal image-reference" href="_images/coin_flip.png"><img alt="con-prob" src="_images/coin_flip.png" style="width: 350.0px; height: 315.0px;" /></a>
+</div>
+</div>
+<div class="section" id="conjugate-prior">
+<h2>Conjugate prior<a class="headerlink" href="#conjugate-prior" title="Permalink to this headline">¶</a></h2>
+<p>If <span class="math">\(P(\theta|X)\)</span> is in the same <em>family</em> as the
+<span class="math">\(P(\theta)\)</span>, then the distributions are conjugate to each other.
+This results in a <em>closed-form expression</em> for <span class="math">\(P(\theta|X)\)</span>.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Numerical integration is often used when no closed-form solution exists</li>
+<li>Conjugate priors make it easier to see how the likelihood updates <span class="math">\((\theta|X)\)</span></li>
+<li><dl class="first docutils">
+<dt>All members of the exponential family have conjugate priors</dt>
+<dd><ul class="first last">
+<li>normal, exponential, gamma, chi-squared, beta, Dirichlet,
+Bernoulli, categorical, Poisson, Wishart...</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="switchpoint-analysis">
+<h2>Switchpoint analysis<a class="headerlink" href="#switchpoint-analysis" title="Permalink to this headline">¶</a></h2>
+<p>These are time-course data.  Can we infer when a behavioral change occurred?</p>
+<div class="align-center figure">
+<a class="reference internal image-reference" href="_images/text_data_1.png"><img alt="con-prob" src="_images/text_data_1.png" style="width: 562.5px; height: 157.5px;" /></a>
+</div>
+<p>Lets denote day with <span class="math">\(i\)</span> and text-message count by <span class="math">\(C_i\)</span>,</p>
+<div class="math">
+\[C_i \sim \textrm{Poisson}(\lambda)\]</div>
+<ul class="simple">
+<li>Does the rate <span class="math">\(\lambda\)</span> change?</li>
+<li>More specifically, is there a day during the observation period (call it <span class="math">\(\tau\)</span>) where the parameter <span class="math">\(\lambda\)</span> suddenly jumps to a higher value?</li>
+<li>We are looking for a <em>switchpoint</em> s.t. <span class="math">\(\lambda =\)</span></li>
+</ul>
+<div class="math">
+\begin{cases}
+\lambda_1  &amp; \textrm{if } t &lt; \tau \cr
+\lambda_2 &amp; \textrm{if } t &gt; \tau
+\end{cases}</div><p>If no change occurred then the <span class="math">\(\lambda\)</span> posterior distribution should be about equal.</p>
+<p>We are using a Bayesian framework so we need to set priors.  The exponential takes textbf{any} positive number so it seems reasonable.</p>
+<div class="math">
+\begin{align}
+\lambda_1 \sim \text{Exp}( \alpha ) \\
+\lambda_2 \sim \text{Exp}( \alpha ) \\
+\tau \sim \text{DiscreteUniform(1,70) }\\
+\end{align}</div><p>The non-informative prior over <span class="math">\(\tau\)</span> can be interpreted as <span class="math">\(\Rightarrow P( \tau = k ) = \frac{1}{70}\)</span></p>
+<p>For a non-informative prior a good rule of thumb for <span class="math">\(\alpha\)</span>  is to set the exponential parameter equal to the inverse of the average of the count data.</p>
+<div class="math">
+\[\frac{1}{N}\sum_{i=0}^N \;C_i \approx E[\; \lambda \; |\; \alpha ] = \frac{1}{\alpha}\]</div>
+<div class="section" id="pymc">
+<h3>PyMC<a class="headerlink" href="#pymc" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>PyMC is a Python library for programming Bayesian analysis</li>
+<li>It is a fast, well-maintained library</li>
+<li><a class="reference external" href="https://pymc-devs.github.io/pymc">https://pymc-devs.github.io/pymc</a> The docs are pretty good</li>
+<li><strong>Probabilistic programming</strong> - we create probability models using programming variables as the model&#8217;s components</li>
+<li>Remember that <em>parameters are variables</em> not an unknown state of nature</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymc</span> <span class="kn">as</span> <span class="nn">pm</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">count_data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">lambda_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;lambda_1&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+<span class="n">lambda_2</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;lambda_2&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">DiscreteUniform</span><span class="p">(</span><span class="s2">&quot;tau&quot;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="n">n_count_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These variables are <strong>stochastic variables</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Random output:&quot;</span><span class="p">,</span> <span class="n">tau</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">tau</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">tau</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@pm.deterministic</span>
+<span class="k">def</span> <span class="nf">lambda_</span><span class="p">(</span><span class="n">tau</span><span class="o">=</span><span class="n">tau</span><span class="p">,</span> <span class="n">lambda_1</span><span class="o">=</span><span class="n">lambda_1</span><span class="p">,</span> <span class="n">lambda_2</span><span class="o">=</span><span class="n">lambda_2</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_count_data</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">[:</span><span class="n">tau</span><span class="p">]</span> <span class="o">=</span> <span class="n">lambda_1</span>  <span class="c1"># lambda before tau is lambda1</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">tau</span><span class="p">:]</span> <span class="o">=</span> <span class="n">lambda_2</span>  <span class="c1"># lambda after (and including) tau is lambda2</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="n">observation</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Poisson</span><span class="p">(</span><span class="s2">&quot;obs&quot;</span><span class="p">,</span><span class="n">lambda_</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="n">count_data</span><span class="p">,</span><span class="n">observed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">([</span><span class="n">observation</span><span class="p">,</span><span class="n">lambda_1</span><span class="p">,</span><span class="n">lambda_2</span><span class="p">,</span><span class="n">tau</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><strong>&#64;pm.deterministic</strong> is a <strong>decorator</strong> specifying a deterministic</dt>
+<dd>function.  The code creates a new function, but you should just think
+of it as a random variable.</dd>
+</dl>
+<p>Notice how we worked our way from hyperpriors, to priors until we got
+to the observations.  Kinda like a story that describes how the data
+are <em>generated</em>.</p>
+</div>
+</div>
+<div class="section" id="markov-chain-monte-carlo-mcmc">
+<h2>Markov Chain Monte Carlo (MCMC)<a class="headerlink" href="#markov-chain-monte-carlo-mcmc" title="Permalink to this headline">¶</a></h2>
+<p>Algorithms for sampling from a probability distribution based on constructing a Markov chain that has the desired distribution as its equilibrium distribution</p>
+<p>Returns thousands of random variables from the posterior distributions of <span class="math">\(\lambda_{1}\)</span>,:math:<cite>lambda_{2}</cite> and <span class="math">\(\tau\)</span>.  We collect the samples (traces) and plot them as histograms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>   <span class="n">mcmc</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MCMC</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+   <span class="n">mcmc</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">40000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="sb">`mcmc.sample(iter, burn, thin)`</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><strong>iter</strong> - number of MCMC iterations</li>
+<li><strong>burn</strong> - number of iterations before we start tracking</li>
+<li><strong>thin</strong> - after the burnin tracking happens each thin iterations</li>
+</ul>
+<div class="align-center figure">
+<a class="reference internal image-reference" href="_images/texts_posterior.png"><img alt="con-prob" src="_images/texts_posterior.png" style="width: 960.0px; height: 720.0px;" /></a>
+</div>
+<p>A distribution allows us to see the uncertainty in our estimates.  The
+two distribution for <span class="math">\(\lambda\)</span> are distinct.  Near day 45, there
+was a 50% chance that the user&#8217;s behavior changed.</p>
+<div class="align-center figure">
+<a class="reference internal image-reference" href="_images/texts_expected.png"><img alt="con-prob" src="_images/texts_expected.png" style="width: 450.0px; height: 270.0px;" /></a>
+</div>
+<p><em>In fact, the 45th day corresponds to Christmas, and I moved away to Toronto the next month, leaving a girlfriend behind - Cam Davidson Pilon</em></p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="bayes-1.html" class="btn btn-neutral" title="Bayesian Inference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Galvanize DSI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

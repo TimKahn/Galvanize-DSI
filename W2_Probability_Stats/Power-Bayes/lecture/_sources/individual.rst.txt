@@ -1,0 +1,77 @@
+
+Individual assignement
+===========================
+
+Everyone should do Part 0 and Part 1 of the assignment.
+
+   * Read/write CSV between as a way to communicate between R and Python
+   * get familiar with calculating pwr and the factors that influence it
+
+The Python part
+--------------------
+     
+   1. Read in the MTCARS data into Python.
+   2. Create a new column by converting mpg Miles/(US) gallon to liter/100 Kilometers
+   3. Create a new column with 'high' and 'low' horse power splitting the data at the median
+   4. Save the new data frame as a CSV
+
+
+The R part
+-------------------
+
+   5. Create an empty .R file and run carry out the rest of the steps in that script
+   6. Load the CSV into R
+   7. Run an ANOVA on the Horse Power groups wit MPG as the response variable http://www.stat.columbia.edu/~martin/W2024/R3.pdf
+   8. From http://www.statmethods.net/stats/power.html go through each of the example boxes at the end of the page
+
+      
+.. note:: Yes you can run R from within Jupyter and yes you can run R from within Python (rpy2) but here I want you to use a script 
+
+	  
+Getting started
+----------------
+      
+To execute your script From a terminal type:
+
+.. code:: bash
+
+   ~$ Rscript myscript.R
+
+
+This is how you plot the mtcars data in Python
+
+.. code-block:: python
+   
+   import pandas as pd
+   import numpy as np
+   import statsmodels.api as sm
+   % matplotlib inline
+   from pandas.tools.plotting import scatter_matrix
+
+   mtcars2 = sm.datasets.get_rdataset('mtcars')
+   df = pd.DataFrame(mtcars2.data)
+   scatter_matrix(df[[0,2,3,4,5]], alpha=0.3, figsize=(8, 8), diagonal='kde', marker='o');
+
+This is how you read a csv into an R dataframe
+
+.. code:: r
+
+   mtcars <- read.csv(outfileName)
+   attach(x)
+   print(names(x))
+   print(mean(x$some_feature))
+   
+
+To plot the mcars data using the built in data
+
+.. code:: r
+
+   library(lattice)
+
+   # scatterplot matrix
+   pdf("cars_in_r.pdf",height=6,width=6)
+   splom(mtcars[c(1,3,4,5,6)], main="MTCARS Data")
+   dev.off()
+
+.. note:: `mtcars` is a built in data set in R so if you use that 
+   

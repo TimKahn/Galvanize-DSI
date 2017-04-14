@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Review &mdash; Power calculation and Bayes 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Power calculation and Bayes 1.0 documentation" href="index.html"/>
+        <link rel="next" title="Power calculation" href="power-calculation.html"/>
+        <link rel="prev" title="Power calculation and Intro to Bayesian Inference" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Power calculation and Bayes
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Review</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#z-test">Z-test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inverse-of-the-cdf-percent-point-function">Inverse of the cdf (percent point function)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#the-coin-flip-example">The coin flip example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="power-calculation.html">Power calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r-intro.html">An introduction to R</a></li>
+<li class="toctree-l1"><a class="reference internal" href="individual.html">Individual assignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional-programming.html">Functional programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bayes-1.html">Bayesian Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bayes-2.html">PyMC3</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Power calculation and Bayes</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Review</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/review.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="review">
+<h1>Review<a class="headerlink" href="#review" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="z-test">
+<h2>Z-test<a class="headerlink" href="#z-test" title="Permalink to this headline">¶</a></h2>
+<p>One sample test for population mean</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt><strong>Distribution</strong> The Z-test uses a normal distibution</dt>
+<dd><div class="first last math">
+\[H_0: \mu = \mu_{0}, \sigma = \sigma_{0}\]</div>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>test statistic</strong></dt>
+<dd><div class="first last math">
+\[Z=\frac{\bar{x}-\mu_{0}}{\sigma_{0}/\sqrt{n}}\]</div>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>95% CI</strong></dt>
+<dd><div class="first last math">
+\[\bar{x} \pm \big( Z_{1-\alpha / 2} \big) \big( \frac{\sigma}{\sqrt{n}} \big)\]</div>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>p-value (2 sided)</strong></dt>
+<dd><div class="first last math">
+\begin{eqnarray}
+\textrm{If } Z &amp;&lt;&amp; 0 \textrm{ then } p = 2 \times \Phi(Z)\\
+\textrm{If } Z &amp;&gt;&amp; 0 \textrm{ then } p = 2 \times (1- \Phi(Z))
+\end{eqnarray}</div></dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>Power</strong></dt>
+<dd><div class="first last math">
+\[1-\beta = \Phi \bigg[ Z_{\alpha / 2} + \frac{\mu_{0} - \mu_{1}} {\sigma} \sqrt{n} \bigg]\]</div>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>Sample size</strong></dt>
+<dd><div class="first last math">
+\[n = \frac{ \sigma^{2} \big( Z_{1-\beta} + Z_{1-\alpha / 2}  \big)^{2} } {(\mu_{0} - \mu_{1})^{2}}\]</div>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>We are going to be talking about power, but first do we remember how to calculate some of those pieces?</p>
+<p>Recall that a <strong>critical value</strong> is the point (or points) on the scale
+of the test statistic beyond which we reject the null hypothesis, and
+is derived from the level of significance $alpha$ of the test.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Decide on hypothesis test</li>
+<li>Collect data</li>
+<li>Calculate the test statistic</li>
+<li>Calculate the <em>p</em>-value</li>
+</ol>
+</div></blockquote>
+<p>A cheat sheet for working with hypothesis tests</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="34%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Description</th>
+<th class="head">Python</th>
+<th class="head">R</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Cumulative distribution function (CDF)</td>
+<td>stats.norm.cdf(1.96) = 0.975</td>
+<td>pnorm(1.96) = 0.975</td>
+</tr>
+<tr class="row-odd"><td>Inverse of CDF (Percent point function)</td>
+<td>stats.norm.ppf(0.975) = 1.96</td>
+<td>qnorm(0.975) = 1.96</td>
+</tr>
+<tr class="row-even"><td>Evaluate the PDF</td>
+<td>stats.norm.pdf(1.96) = 0.05</td>
+<td>dnorm(1.96) = 0.05</td>
+</tr>
+<tr class="row-odd"><td>Calculate a 2-sided pvalue with Z = 1.99</td>
+<td>2(1 - s.norm.cdf(1.99)) = 0.047</td>
+<td>2(1-  pnorm(1.99)) = 0.047</td>
+</tr>
+</tbody>
+</table>
+<p>Two sided p-value if Z &gt; 0 2 * (1-Phi(Z)) else 2 * (Phi(Z))
+One sided p-value if Z &gt; 0 (1-Phi(Z)) else (Phi(Z))
+Phi is the standard notation for the CDF</p>
+<div class="section" id="inverse-of-the-cdf-percent-point-function">
+<h3>Inverse of the cdf (percent point function)<a class="headerlink" href="#inverse-of-the-cdf-percent-point-function" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">scs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">scs</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;z=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
+<span class="go">z=1.64</span>
+</pre></div>
+</div>
+<p>So the CDF associated with that <strong>critical value</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">phi_z</span> <span class="o">=</span> <span class="n">scs</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;phi_z=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">phi_z</span><span class="p">))</span>
+<span class="go">phi_z=0.95</span>
+</pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first">QUESTION: Assume X follows a normal...</p>
+<p>What is the <span class="math">\(P(90 &lt; X &lt; 95)\)</span> where mu = 80, sigma = 12?</p>
+</div>
+<div class="topic">
+<p class="topic-title first">QUESTION: So we found that <span class="math">\(Z= 2.0\)</span></p>
+<p>What is the 2-sided <em>p</em>-value associated with that critical value?</p>
+</div>
+</div>
+</div>
+<div class="section" id="the-coin-flip-example">
+<h2>The coin flip example<a class="headerlink" href="#the-coin-flip-example" title="Permalink to this headline">¶</a></h2>
+<p>Starting with some data we want to use statsitics to answer certain kinds of questions:</p>
+<blockquote>
+<div><ul class="simple">
+<li>How well does the data match some assumed (null) distribution?</li>
+<li>If it doesn’t match well can we estimate the parameters to approximate it?</li>
+<li>How accurate are the parameter estimates?</li>
+<li>and more...</li>
+</ul>
+</div></blockquote>
+<p>This is your toolkit</p>
+<blockquote>
+<div><ul class="simple">
+<li>Least squeares</li>
+<li>Numerical optimization</li>
+<li><strong>maximum likelihood</strong></li>
+<li>Expectation maximization (EM)</li>
+<li>Monte Carlo methods</li>
+<li>Variational methods</li>
+<li><strong>Simulation of null distribution</strong> (bootstrap, permutation)</li>
+<li><strong>Estimation of posterior density (Monte Carlo integration, MCMC)</strong></li>
+</ul>
+</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="kn">as</span> <span class="nn">st</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">pcoin</span> <span class="o">=</span> <span class="mf">0.62</span> <span class="c1"># actual value of p for coin</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">bernoulli</span><span class="p">(</span><span class="n">pcoin</span><span class="p">)</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;we observed </span><span class="si">%s</span><span class="s2"> heads out of </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>we observed 67 heads out of 100
+The expected distribution for a fair coin is mu=50.0, sd=5.0
+</pre></div>
+</div>
+<p>The <strong>Expected distribution</strong> for fair coin</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">rv</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">sd</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;The expected distribution for a fair coin is mu=</span><span class="si">%s</span><span class="s2">, sd=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span><span class="n">sd</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>The expected distribution for a fair coin is mu=50.0, sd=5.0
+</pre></div>
+</div>
+<p><strong>Hypothesis testing</strong></p>
+<p>If we move into a hypothesis testing framework we can use the <strong>binomial test</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;binomial test - </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">st</span><span class="o">.</span><span class="n">binom_test</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>binomial test - 0.000873719836912
+</pre></div>
+</div>
+<p>or a <strong>normal approximation for binomal</strong> (Z-test with continuity correction)</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span><span class="o">-</span><span class="mf">0.5</span><span class="o">-</span><span class="n">mu</span><span class="p">)</span><span class="o">/</span><span class="n">sd</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;normal approx for binomial - </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">z</span><span class="p">))))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>normal approx for binomial - 0.000966848284768
+</pre></div>
+</div>
+<p><strong>Simulation</strong></p>
+<p>We <strong>can use simulation</strong> to test things as well</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nsamples</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;simulation p-value - </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">xs</span> <span class="o">&gt;=</span> <span class="n">h</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">xs</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="mf">0.0</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>simulation p-value - 0.00062
+</pre></div>
+</div>
+<p><strong>Maximum likelihood estimation (MLE)</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Maximum likelihood </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))))</span>
+<span class="n">bs_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="p">(</span><span class="n">nsamples</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)),</span> <span class="n">replace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">bs_ps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">bs_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">bs_ps</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Bootstrap CI: (</span><span class="si">%.4f</span><span class="s2">, </span><span class="si">%.4f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bs_ps</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.025</span><span class="o">*</span><span class="n">nsamples</span><span class="p">)],</span> <span class="n">bs_ps</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.975</span><span class="o">*</span><span class="n">nsamples</span><span class="p">)]))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Maximum likelihood 0.67
+Bootstrap CI: (0.5800, 0.7600)
+</pre></div>
+</div>
+<p><strong>Bayesian estimation</strong></p>
+<p>The <strong>Bayesian approach</strong> directly estimates the posterior
+distribution, from which all other point/interval statistics can be estimated.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">fig</span>  <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span>
+<span class="n">prior</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">post</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">h</span><span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="n">h</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+<span class="n">ci</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">interval</span><span class="p">(</span><span class="mf">0.95</span><span class="p">)</span>
+<span class="n">map_</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span><span class="o">+</span><span class="n">a</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">-</span><span class="mf">2.0</span><span class="p">)</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">prior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Prior&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Posterior&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">ci</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ci</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% CI&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">map_</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;coin-toss.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="align-center figure">
+<a class="reference internal image-reference" href="_images/coin-toss.png"><img alt="coin-toss" src="_images/coin-toss.png" style="width: 600.0px; height: 450.0px;" /></a>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The above calculations have simple analytic solutions. For
+most real life problems an appropriate model is generally more
+complex and more complex models statistical models make use of more
+advanced numerical methods and simulations.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="power-calculation.html" class="btn btn-neutral float-right" title="Power calculation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Power calculation and Intro to Bayesian Inference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Galvanize DSI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

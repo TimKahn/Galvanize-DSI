@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>An introduction to R &mdash; Power calculation and Bayes 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Power calculation and Bayes 1.0 documentation" href="index.html"/>
+        <link rel="next" title="Individual assignement" href="individual.html"/>
+        <link rel="prev" title="Power calculation" href="power-calculation.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Power calculation and Bayes
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="review.html">Review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="power-calculation.html">Power calculation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">An introduction to R</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-basics">The basics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#data-types">Data types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#basic-containers">Basic containers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#r-and-jupyter">R and Jupyter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#where-do-we-go-from-here">Where do we go from here?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="individual.html">Individual assignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional-programming.html">Functional programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bayes-1.html">Bayesian Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bayes-2.html">PyMC3</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Power calculation and Bayes</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>An introduction to R</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/r-intro.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="an-introduction-to-r">
+<h1>An introduction to R<a class="headerlink" href="#an-introduction-to-r" title="Permalink to this headline">¶</a></h1>
+<p>R and Python are the two big languages in data science.  Some things
+are easier in one language than they are in the other one.</p>
+<p>Python is a fairly general purpose language, while R is very specific
+for statistics.  There are many comparison points, but the goal here
+is to get R running so you can do power calculations.</p>
+<p>Here is <a class="reference external" href="http://www.kdnuggets.com/2015/05/r-vs-python-data-science.html">an article discussing the two languages in data science</a>.</p>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p><strong>Ubuntu</strong></p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Add the following two lines to the end of your &#39;/etc/apt/sources.list&#39;
+
+   ## R stuff
+   deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu/ xenial/
+
+Add the key to your keyserver
+
+   ~$ gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
+   ~$ gpg -a --export E084DAB9 | sudo apt-key add -
+   ~$ sudo apt-get update &amp;&amp; sudo apt-get upgrade
+
+Install R
+
+   ~$ sudo apt-get install r-base
+</pre></div>
+</div>
+<p><strong>OSX</strong></p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>~$ brew tap homebrew/science
+~$ brew install r
+</pre></div>
+</div>
+<p><strong>Now install the power package</strong></p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>~$ sudo R
+&gt; install.packages(&#39;pwr&#39;)
+</pre></div>
+</div>
+<div class="section" id="the-basics">
+<h3>The basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="data-types">
+<h4>Data types<a class="headerlink" href="#data-types" title="Permalink to this headline">¶</a></h4>
+<p>Numerics, integers, logicals and characters</p>
+<div class="highlight-r"><div class="highlight"><pre><span></span><span class="o">&gt;</span> x <span class="o">&lt;-</span> <span class="m">4</span>
+<span class="o">&gt;</span> <span class="kp">class</span><span class="p">(</span>x<span class="p">)</span>
+<span class="o">&gt;</span> <span class="kp">is.integer</span><span class="p">(</span>x<span class="p">)</span>
+
+<span class="o">&gt;</span> y <span class="o">&lt;-</span> <span class="kp">as.integer</span><span class="p">(</span><span class="m">3.1</span><span class="p">)</span>
+<span class="o">&gt;</span> z <span class="o">&lt;-</span> <span class="kp">as.integer</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="o">&gt;</span> z <span class="o">&lt;-</span> x <span class="o">&gt;</span> y
+
+<span class="o">&gt;</span> a <span class="o">&lt;-</span> <span class="kp">as.character</span><span class="p">(</span><span class="m">99.9</span><span class="p">)</span>
+<span class="o">&gt;</span> b <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span><span class="s">&quot;sam&quot;</span><span class="p">,</span><span class="s">&quot;gamgee&quot;</span><span class="p">,</span>sep<span class="o">=</span><span class="s">&quot; &quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="kt">c</span> <span class="o">&lt;-</span> <span class="kp">sprintf</span><span class="p">(</span><span class="s">&quot;%s has %d lembas breads&quot;</span><span class="p">,</span> <span class="s">&quot;sam&quot;</span><span class="p">,</span> <span class="m">59</span><span class="p">)</span>
+<span class="o">&gt;</span> d <span class="o">&lt;-</span> <span class="kp">sub</span><span class="p">(</span><span class="s">&quot;friendly&quot;</span><span class="p">,</span> <span class="s">&quot;wary of&quot;</span><span class="p">,</span> <span class="s">&quot;Sam is friendly with spiders.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="basic-containers">
+<h4>Basic containers<a class="headerlink" href="#basic-containers" title="Permalink to this headline">¶</a></h4>
+<p>vectors, matrices</p>
+<div class="highlight-r"><div class="highlight"><pre><span></span><span class="o">&gt;</span> x <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">)</span>
+<span class="o">&gt;</span> y <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="s">&quot;e&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> z <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>x<span class="p">,</span>y<span class="p">)</span>
+
+<span class="o">&gt;</span> x <span class="o">+</span> <span class="m">5</span>
+<span class="o">&gt;</span> x <span class="o">+</span> <span class="m">1</span><span class="o">:</span><span class="m">4</span>
+
+<span class="o">&gt;</span> u <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">20</span><span class="p">,</span> <span class="m">30</span><span class="p">)</span>
+<span class="o">&gt;</span> v <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> <span class="m">9</span><span class="p">)</span>
+<span class="o">&gt;</span> u <span class="o">+</span> v
+
+<span class="o">&gt;</span> A <span class="o">=</span> <span class="kt">matrix</span><span class="p">(</span>
+<span class="o">+</span>   <span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> <span class="c1"># the data elements</span>
+<span class="o">+</span>   nrow<span class="o">=</span><span class="m">2</span><span class="p">,</span>              <span class="c1"># number of rows</span>
+<span class="o">+</span>   ncol<span class="o">=</span><span class="m">3</span><span class="p">,</span>              <span class="c1"># number of columns</span>
+<span class="o">+</span>   byrow <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>        <span class="c1"># fill matrix by rows</span>
+<span class="o">&gt;</span> A<span class="p">[</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">]</span>
+<span class="o">&gt;</span> A<span class="p">[</span><span class="m">2</span><span class="p">,]</span>
+<span class="o">&gt;</span> A<span class="p">[,</span><span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">3</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>A list is a generic vector containing other objects.</p>
+<div class="highlight-r"><div class="highlight"><pre><span></span><span class="o">&gt;</span> n <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+<span class="o">&gt;</span> s <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;aa&quot;</span><span class="p">,</span> <span class="s">&quot;bb&quot;</span><span class="p">,</span> <span class="s">&quot;cc&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> b <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="o">&gt;</span> df <span class="o">=</span> <span class="kt">data.frame</span><span class="p">(</span>n<span class="p">,</span> s<span class="p">,</span> b<span class="p">)</span>
+
+<span class="o">&gt;</span> mtcars
+<span class="o">&gt;</span> mtcars<span class="p">[</span><span class="s">&quot;Mazda RX4&quot;</span><span class="p">,</span> <span class="s">&quot;cyl&quot;</span><span class="p">]</span>
+<span class="o">&gt;</span> <span class="kp">nrow</span><span class="p">(</span>mtcars<span class="p">)</span>
+<span class="o">&gt;</span> <span class="kp">ncol</span><span class="p">(</span>mtcars<span class="p">)</span>
+<span class="o">&gt;</span> <span class="kp">head</span><span class="p">(</span>mtcars<span class="p">)</span>
+<span class="o">&gt;</span> mtcars<span class="p">[</span><span class="m">9</span><span class="p">]</span>
+<span class="o">&gt;</span> mtcars<span class="p">[[</span><span class="m">9</span><span class="p">]]</span>
+<span class="o">&gt;</span> mtcars<span class="p">[</span><span class="s">&quot;am&quot;</span><span class="p">]</span>
+<span class="o">&gt;</span> mtcars<span class="o">$</span>am
+
+<span class="o">&gt;</span> mydata <span class="o">=</span> read.csv<span class="p">(</span><span class="s">&quot;mydata.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="r-and-jupyter">
+<h3>R and Jupyter<a class="headerlink" href="#r-and-jupyter" title="Permalink to this headline">¶</a></h3>
+<p>From inside of a Jupyter notebook</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>%load_ext rpy2.ipython
+
+%%R
+library(lattice)
+attach(mtcars)
+
+# scatterplot matrix
+splom(mtcars[c(1,3,4,5,6)], main=&quot;MTCARS Data&quot;)
+</pre></div>
+</div>
+</div>
+<div class="section" id="where-do-we-go-from-here">
+<h3>Where do we go from here?<a class="headerlink" href="#where-do-we-go-from-here" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference download internal" href="_downloads/RBasics-I-v2.pdf" download=""><code class="xref download docutils literal"><span class="pre">RBasics-I-v2.pdf</span></code></a></li>
+<li><a class="reference download internal" href="_downloads/RBasics-II-v2.pdf" download=""><code class="xref download docutils literal"><span class="pre">RBasics-II-v2.pdf</span></code></a></li>
+<li><a class="reference download internal" href="_downloads/RQuickReference.pdf" download=""><code class="xref download docutils literal"><span class="pre">RQuickReference.pdf</span></code></a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="individual.html" class="btn btn-neutral float-right" title="Individual assignement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="power-calculation.html" class="btn btn-neutral" title="Power calculation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Galvanize DSI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

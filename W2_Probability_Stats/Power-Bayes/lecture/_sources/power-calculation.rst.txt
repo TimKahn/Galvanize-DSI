@@ -1,0 +1,57 @@
+.. power-calculation (powerbayes)
+
+Power calculation
+====================================================
+
+What you need...
+
+   * :math:`\alpha` = **Type I Error** - Reject :math:`H_{0}` when :math:`H_{0}` is True (false positive)
+   * :math:`\beta` = **Type II Error** - Fail to reject :math:`H_{0}` when :math:`H_{0}` is False (false negative)
+   * :math:`1-\beta` = **Power** - Reject :math:`H_{0}` when :math:`H_{0}` is False
+
+Why you need it...
+
+   * Determine the number of samples needed to power a given study
+   * We can obtain :math:`n` samples so what level of statistical power will we have?
+     
+**Statistical power**
+
+   * The likelihood that we call something significant when there is something to there to be detected.
+   * The things that affect our statistical power are
+      1. *significance level*
+      2. :math:`|\mu_{0} - \mu_{1}|`
+      3. *standard deviation*
+      4. *sample size*.
+
+ 
+   +-----------------+-------------------------------+-------------------------------+
+   |                 | :math:`H_{0}` (truth)         | :math:`H_{1}` (truth)         |
+   +=================+===============================+===============================+
+   | :math:`H_{0}`   | Correct (:math:`\alpha-1`)    | Type II error (:math:`\beta`) |
+   +-----------------+-------------------------------+-------------------------------+
+   | :math:`H_{1}`   | Type I error (:math:`\alpha`) | Power (:math:`1-\beta`)       |
+   +-----------------+-------------------------------+-------------------------------+		    
+
+Power calculations **can** be hard coded in Python, but R is also accessible and it is one of the things that is currently done with a bit more ease.
+
+  * http://www.statmethods.net/stats/power.html
+
+.. topic::  For a one-way ANOVA comparing 5 groups.
+
+   calculate the sample size needed in each group to obtain a power of
+   0.80, when the effect size is moderate (0.25) and a significance
+   level of 0.05 is employed.
+   
+This is how to do it in RPy2
+
+>>> from rpy2.robjects.packages import importr
+>>> pwr = importr('pwr')
+>>> result = pwr.pwr_anova_test(k=5,f=.25,sig_level=.05,power=.8)
+>>> print str(result)
+k = 5
+n = 39.1534
+f = 0.25
+sig.level = 0.05
+power = 0.8
+
+http://www.statmethods.net/stats/power.html

@@ -1,0 +1,41 @@
+.. bayes 1 (powerbayes)
+
+Bayesian Inference
+====================================================
+
+Mini-bbjectives:
+
+1. Discuss the philosophy
+2. Review conditional probability
+3. Bayes Rule
+4. Discuss Bayesian inference
+
+Bayes Theorem
+----------------
+
+   :math:`P(A|B) = \frac{P(B|A)P(A)}{P(B)}`    
+
+   :math:`P(\theta|x) = \frac{P(x|\theta)P(\theta)}{P(x)}`    
+
+
+Here are the slides:
+	 
+  * :download:`probabilistic-programming-intro.pdf`
+
+The slides come from this repo:
+
+  * `probabilistic programming intro <https://github.com/GalvanizeOpenSource/probabilistic-programming-intro>`_
+	  
+Pair Assignment:
+
+   * Do part 0 and part 1
+   * For part 2 you may instead go through the following notebook
+
+      `Introduction to PyMC3 <https://github.com/fonnesbeck/Bios8366/blob/master/notebooks/Section4_4-Introduction-to-PyMC3.ipynb>`_
+  
+Resources
+-----------
+
+* `Probabilistic Programming and Bayesian Methods for Hackers <https://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers>`_ by `Cameron Davidson-Pilon <https://github.com/CamDavidsonPilon>`_
+
+* `nice intro <http://www.kdnuggets.com/2016/12/datascience-introduction-bayesian-inference.html>`_

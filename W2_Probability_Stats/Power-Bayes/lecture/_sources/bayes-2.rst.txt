@@ -1,0 +1,174 @@
+.. bayes 3 (powerbayes)
+
+
+PyMC3
+====================================================
+
+  * Think of the posterior as our *degree of belief* given the evidence
+
+  * :math:`P(A)`: The coin has a 50 percent chance of being
+    Heads. :math:`P(A | X)`: You look at the coin, observe a Heads
+    has landed, denote this information :math:`X`, and trivially
+    assign probability 1.0 to Heads and 0.0 to Tails.
+
+  * :math:`P(A)`: This big, complex code likely has a bug in
+    it. :math:`P(A | X)`: The code passed all :math:`X` tests; there
+    still might be a bug, but it is less likely now.
+
+  * :math:`P(A)`: The patient could have any number of
+    diseases. :math:`P(A | X)`: A blood test generated evidence
+    :math:`X`, ruling out some diseases.
+
+Coin flip example... again
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Lets imagine we did not know the probability of a coin flip.  We think there is some ratio :math:`p`, but we have no prior belief.
+
+.. figure:: coin_flip.png
+   :scale: 35%
+   :align: center
+   :alt: con-prob
+   :figclass: align-center
+
+Conjugate prior
+^^^^^^^^^^^^^^^^^
+
+If :math:`P(\theta|X)` is in the same *family* as the
+:math:`P(\theta)`, then the distributions are conjugate to each other.
+This results in a *closed-form expression* for :math:`P(\theta|X)`.
+    
+   * Numerical integration is often used when no closed-form solution exists
+   * Conjugate priors make it easier to see how the likelihood updates :math:`(\theta|X)`
+   * All members of the exponential family have conjugate priors
+      * normal, exponential, gamma, chi-squared, beta, Dirichlet,
+        Bernoulli, categorical, Poisson, Wishart...
+
+Switchpoint analysis
+^^^^^^^^^^^^^^^^^^^^^^^
+
+These are time-course data.  Can we infer when a behavioral change occurred?
+
+.. figure:: text_data_1.png
+   :scale: 45%
+   :align: center
+   :alt: con-prob
+   :figclass: align-center
+
+Lets denote day with :math:`i` and text-message count by :math:`C_i`,
+
+.. math::
+
+   C_i \sim \textrm{Poisson}(\lambda)
+
+   
+* Does the rate :math:`\lambda` change?
+* More specifically, is there a day during the observation period (call it :math:`\tau`) where the parameter :math:`\lambda` suddenly jumps to a higher value?
+* We are looking for a *switchpoint* s.t. :math:`\lambda =` 
+
+.. math::
+   :nowrap:
+   
+   \begin{cases}
+   \lambda_1  & \textrm{if } t < \tau \cr
+   \lambda_2 & \textrm{if } t > \tau
+   \end{cases}
+
+If no change occurred then the :math:`\lambda` posterior distribution should be about equal.
+  
+We are using a Bayesian framework so we need to set priors.  The exponential takes \textbf{any} positive number so it seems reasonable.
+
+.. math::
+   :nowrap:
+   
+   \begin{align}
+   \lambda_1 \sim \text{Exp}( \alpha ) \\
+   \lambda_2 \sim \text{Exp}( \alpha ) \\
+   \tau \sim \text{DiscreteUniform(1,70) }\\
+   \end{align}
+
+The non-informative prior over :math:`\tau` can be interpreted as :math:`\Rightarrow P( \tau = k ) = \frac{1}{70}`
+
+For a non-informative prior a good rule of thumb for :math:`\alpha`  is to set the exponential parameter equal to the inverse of the average of the count data.
+
+.. math::
+   \frac{1}{N}\sum_{i=0}^N \;C_i \approx E[\; \lambda \; |\; \alpha ] = \frac{1}{\alpha}
+
+PyMC
+----------
+
+* PyMC is a Python library for programming Bayesian analysis
+* It is a fast, well-maintained library
+* `<https://pymc-devs.github.io/pymc>`_ The docs are pretty good
+* **Probabilistic programming** - we create probability models using programming variables as the model's components
+* Remember that *parameters are variables* not an unknown state of nature
+
+
+.. code-block:: python
+
+   import pymc as pm
+   alpha = 1.0 / count_data.mean()
+   lambda_1 = pm.Exponential("lambda_1", alpha)
+   lambda_2 = pm.Exponential("lambda_2", alpha)
+   tau = pm.DiscreteUniform("tau", lower=0, upper=n_count_data)
+
+These variables are **stochastic variables**
+
+.. code-block:: python
+
+   print("Random output:", tau.random(), tau.random(), tau.random())
+
+.. code-block:: python
+
+   @pm.deterministic
+   def lambda_(tau=tau, lambda_1=lambda_1, lambda_2=lambda_2):
+       out = np.zeros(n_count_data)
+       out[:tau] = lambda_1  # lambda before tau is lambda1
+       out[tau:] = lambda_2  # lambda after (and including) tau is lambda2
+       return out
+
+   observation = pm.Poisson("obs",lambda_,value=count_data,observed=True)
+   model = pm.Model([observation,lambda_1,lambda_2,tau])
+       
+**@pm.deterministic** is a **decorator** specifying a deterministic
+ function.  The code creates a new function, but you should just think
+ of it as a random variable.
+
+Notice how we worked our way from hyperpriors, to priors until we got
+to the observations.  Kinda like a story that describes how the data
+are *generated*.
+
+Markov Chain Monte Carlo (MCMC)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Algorithms for sampling from a probability distribution based on constructing a Markov chain that has the desired distribution as its equilibrium distribution
+
+Returns thousands of random variables from the posterior distributions of :math:`\lambda_{1}`,:math:`\lambda_{2}` and :math:`\tau`.  We collect the samples (traces) and plot them as histograms
+
+.. code-block:: python
+
+    mcmc = pm.MCMC(model)
+    mcmc.sample(40000, 10000, 1)
+   
+ `mcmc.sample(iter, burn, thin)`
+    
+* **iter** - number of MCMC iterations 
+* **burn** - number of iterations before we start tracking 
+* **thin** - after the burnin tracking happens each thin iterations
+
+.. figure:: texts_posterior.png
+   :scale: 20%
+   :align: center
+   :alt: con-prob
+   :figclass: align-center
+
+A distribution allows us to see the uncertainty in our estimates.  The
+two distribution for :math:`\lambda` are distinct.  Near day 45, there
+was a 50% chance that the user's behavior changed.
+
+.. figure:: texts_expected.png
+   :scale: 45%
+   :align: center
+   :alt: con-prob
+   :figclass: align-center
+
+
+*In fact, the 45th day corresponds to Christmas, and I moved away to Toronto the next month, leaving a girlfriend behind - Cam Davidson Pilon*

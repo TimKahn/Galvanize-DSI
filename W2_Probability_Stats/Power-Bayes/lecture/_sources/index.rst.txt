@@ -1,0 +1,27 @@
+.. powerbayes documentation master file, created by
+   sphinx-quickstart on Tue Oct 11 15:24:00 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Power calculation and Intro to Bayesian Inference
+====================================================
+
+.. toctree::
+   :maxdepth: 2
+
+   review
+   power-calculation
+   r-intro
+   individual
+   functional-programming
+   bayes-1
+   
+The main objectives for today are:
+
+   * Review hypothesis testing, estimation and probability
+   * Introduce everyone to the statistical computing language R
+   * Carry out power calculations using `pwr` package
+   * Get familiar with some aspects of functional programming  
+     
+   * Introduction to Bayesian Inference
+   * Introduction to PyMC3

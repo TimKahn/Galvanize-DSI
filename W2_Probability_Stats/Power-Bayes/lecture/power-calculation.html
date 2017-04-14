@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Power calculation &mdash; Power calculation and Bayes 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Power calculation and Bayes 1.0 documentation" href="index.html"/>
+        <link rel="next" title="An introduction to R" href="r-intro.html"/>
+        <link rel="prev" title="Review" href="review.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Power calculation and Bayes
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="review.html">Review</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Power calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r-intro.html">An introduction to R</a></li>
+<li class="toctree-l1"><a class="reference internal" href="individual.html">Individual assignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional-programming.html">Functional programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bayes-1.html">Bayesian Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bayes-2.html">PyMC3</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Power calculation and Bayes</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Power calculation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/power-calculation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="power-calculation">
+<h1>Power calculation<a class="headerlink" href="#power-calculation" title="Permalink to this headline">¶</a></h1>
+<p>What you need...</p>
+<blockquote>
+<div><ul class="simple">
+<li><span class="math">\(\alpha\)</span> = <strong>Type I Error</strong> - Reject <span class="math">\(H_{0}\)</span> when <span class="math">\(H_{0}\)</span> is True (false positive)</li>
+<li><span class="math">\(\beta\)</span> = <strong>Type II Error</strong> - Fail to reject <span class="math">\(H_{0}\)</span> when <span class="math">\(H_{0}\)</span> is False (false negative)</li>
+<li><span class="math">\(1-\beta\)</span> = <strong>Power</strong> - Reject <span class="math">\(H_{0}\)</span> when <span class="math">\(H_{0}\)</span> is False</li>
+</ul>
+</div></blockquote>
+<p>Why you need it...</p>
+<blockquote>
+<div><ul class="simple">
+<li>Determine the number of samples needed to power a given study</li>
+<li>We can obtain <span class="math">\(n\)</span> samples so what level of statistical power will we have?</li>
+</ul>
+</div></blockquote>
+<p><strong>Statistical power</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>The likelihood that we call something significant when there is something to there to be detected.</li>
+<li><dl class="first docutils">
+<dt>The things that affect our statistical power are</dt>
+<dd><ol class="first last arabic">
+<li><em>significance level</em></li>
+<li><span class="math">\(|\mu_{0} - \mu_{1}|\)</span></li>
+<li><em>standard deviation</em></li>
+<li><em>sample size</em>.</li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="39%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head"><span class="math">\(H_{0}\)</span> (truth)</th>
+<th class="head"><span class="math">\(H_{1}\)</span> (truth)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><span class="math">\(H_{0}\)</span></td>
+<td>Correct (<span class="math">\(\alpha-1\)</span>)</td>
+<td>Type II error (<span class="math">\(\beta\)</span>)</td>
+</tr>
+<tr class="row-odd"><td><span class="math">\(H_{1}\)</span></td>
+<td>Type I error (<span class="math">\(\alpha\)</span>)</td>
+<td>Power (<span class="math">\(1-\beta\)</span>)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Power calculations <strong>can</strong> be hard coded in Python, but R is also accessible and it is one of the things that is currently done with a bit more ease.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://www.statmethods.net/stats/power.html">http://www.statmethods.net/stats/power.html</a></li>
+</ul>
+</div></blockquote>
+<div class="topic">
+<p class="topic-title first">For a one-way ANOVA comparing 5 groups.</p>
+<p>calculate the sample size needed in each group to obtain a power of
+0.80, when the effect size is moderate (0.25) and a significance
+level of 0.05 is employed.</p>
+</div>
+<p>This is how to do it in RPy2</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">rpy2.robjects.packages</span> <span class="k">import</span> <span class="n">importr</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pwr</span> <span class="o">=</span> <span class="n">importr</span><span class="p">(</span><span class="s1">&#39;pwr&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">pwr</span><span class="o">.</span><span class="n">pwr_anova_test</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">f</span><span class="o">=.</span><span class="mi">25</span><span class="p">,</span><span class="n">sig_level</span><span class="o">=.</span><span class="mi">05</span><span class="p">,</span><span class="n">power</span><span class="o">=.</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">k = 5</span>
+<span class="go">n = 39.1534</span>
+<span class="go">f = 0.25</span>
+<span class="go">sig.level = 0.05</span>
+<span class="go">power = 0.8</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="http://www.statmethods.net/stats/power.html">http://www.statmethods.net/stats/power.html</a></p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="r-intro.html" class="btn btn-neutral float-right" title="An introduction to R" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="review.html" class="btn btn-neutral" title="Review" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Galvanize DSI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

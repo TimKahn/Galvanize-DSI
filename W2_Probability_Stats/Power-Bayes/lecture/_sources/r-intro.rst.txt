@@ -1,0 +1,149 @@
+.. r into (powerbayes)
+
+
+An introduction to R
+====================================================
+
+R and Python are the two big languages in data science.  Some things
+are easier in one language than they are in the other one.
+
+Python is a fairly general purpose language, while R is very specific
+for statistics.  There are many comparison points, but the goal here
+is to get R running so you can do power calculations.
+
+Here is `an article discussing the two languages in data science <http://www.kdnuggets.com/2015/05/r-vs-python-data-science.html>`_.
+
+Getting started
+--------------------
+
+**Ubuntu**
+
+.. code-block:: none
+
+   Add the following two lines to the end of your '/etc/apt/sources.list'
+
+      ## R stuff
+      deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu/ xenial/
+
+   Add the key to your keyserver
+
+      ~$ gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
+      ~$ gpg -a --export E084DAB9 | sudo apt-key add -
+      ~$ sudo apt-get update && sudo apt-get upgrade
+
+   Install R
+
+      ~$ sudo apt-get install r-base
+
+      
+**OSX**
+   
+.. code-block:: bash
+
+   ~$ brew tap homebrew/science
+   ~$ brew install r
+
+**Now install the power package**
+
+
+.. code-block:: none
+
+   ~$ sudo R
+   > install.packages('pwr')
+
+
+The basics
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Data types
+###########
+
+Numerics, integers, logicals and characters
+
+.. code-block:: r
+   
+   > x <- 4
+   > class(x)
+   > is.integer(x)
+
+   > y <- as.integer(3.1)
+   > z <- as.integer(TRUE)
+   > z <- x > y 
+
+   > a <- as.character(99.9)
+   > b <- paste("sam","gamgee",sep=" ")
+   > c <- sprintf("%s has %d lembas breads", "sam", 59) 
+   > d <- sub("friendly", "wary of", "Sam is friendly with spiders.")
+
+Basic containers
+####################
+
+vectors, matrices
+
+.. code-block:: r
+
+   > x <- c(1,2,3,4)
+   > y <- c("a", "b", "c", "d", "e")
+   > z <- c(x,y)
+
+   > x + 5
+   > x + 1:4
+
+   > u = c(10, 20, 30)
+   > v = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+   > u + v
+
+   > A = matrix(
+   +   c(1, 2, 3, 4, 5, 6), # the data elements
+   +   nrow=2,              # number of rows
+   +   ncol=3,              # number of columns
+   +   byrow = TRUE)        # fill matrix by rows 
+   > A[2,3]
+   > A[2,]
+   > A[,c(1,3)]
+
+A list is a generic vector containing other objects.
+
+.. code-block:: r
+
+   > n = c(2, 3, 5)
+   > s = c("aa", "bb", "cc")
+   > b = c(TRUE, FALSE, TRUE)
+   > df = data.frame(n, s, b)
+
+   > mtcars
+   > mtcars["Mazda RX4", "cyl"]
+   > nrow(mtcars)
+   > ncol(mtcars)
+   > head(mtcars)
+   > mtcars[9] 		
+   > mtcars[[9]] 
+   > mtcars["am"]
+   > mtcars$am
+		
+   > mydata = read.csv("mydata.csv")
+
+      
+R and Jupyter
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+From inside of a Jupyter notebook
+
+.. code-block:: none
+
+   %load_ext rpy2.ipython
+
+   %%R
+   library(lattice)
+   attach(mtcars)
+
+   # scatterplot matrix
+   splom(mtcars[c(1,3,4,5,6)], main="MTCARS Data")
+
+Where do we go from here?
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* :download:`RBasics-I-v2.pdf`
+* :download:`RBasics-II-v2.pdf`
+* :download:`RQuickReference.pdf`
+
+
