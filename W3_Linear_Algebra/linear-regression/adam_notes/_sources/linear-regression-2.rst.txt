@@ -1,0 +1,37 @@
+.. linear algebra, linear regression
+   
+
+Linear regression - part 2
+=======================================
+
+Look at the R and Bayesian ways of implementing linear regression
+
+Linear models in R
+----------------------
+
+.. literalinclude:: linear-regression.R
+   :language: r
+
+Download the files:
+   
+   * :download:`snakes.csv`
+   * :download:`linear-regression.R`
+
+	  
+Linear regression in PyMC3
+------------------------------
+
+
+.. literalinclude::  bayes-linear-regression.py
+   :language: python
+	      
+      
+.. figure:: bayes-linreg.png
+   :scale: 35%
+   :align: center
+   :alt: bayes linreg
+   :figclass: align-center
+	     
+The file references:
+
+  * :download:`mylib.py`

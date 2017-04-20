@@ -1,0 +1,202 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Linear algebra &mdash; linear-algebra</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="top" title="linear-algebra" href="#" />
+    <link rel="next" title="NumPy - Basics" href="numpy-1.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="numpy-1.html" title="NumPy - Basics"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">linear-algebra</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Linear algebra</a><ul>
+<li><a class="reference internal" href="#main-contents">Main contents</a><ul>
+<li><a class="reference internal" href="#objectives">Objectives</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#resources">Resources</a><ul>
+<li><a class="reference internal" href="#works-cited">Works cited</a></li>
+<li><a class="reference internal" href="#more-resources">More resources</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="numpy-1.html"
+                        title="next chapter">NumPy - Basics</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="linear-algebra">
+<h1>Linear algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this headline">¶</a></h1>
+<p>Within data science and perhaps at its core is the field of <strong>Machine learning</strong>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Supervised learning</strong> - learn a mapping from inputs <span class="math">\(x\)</span> to outputs <span class="math">\(y\)</span> (given <span class="math">\(\mathcal{D}\)</span>)</li>
+<li><strong>Unsuperviesed learning</strong> - given only <span class="math">\(x\)</span> the goal is to find interesting patterns</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><span class="math">\(x\)</span> is often stored in an <span class="math">\(N x D\)</span> matrix.  <strong>Linear
+algebra</strong> is the branch of mathematics that works directly with
+matrices and it turns out that it is really useful for solving
+systems of linear equations like those from linear regression.</p>
+</div>
+<p>Before we jump in lets make sure we have a few other definations in mind</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Scaler</strong> - a single real number (ints, floats etc)</li>
+<li><strong>Vector</strong> - a 1D array of numbers (real, binary, integer etc)</li>
+<li><strong>Matrix</strong> - a 2D array of numbers</li>
+<li><strong>Tensor</strong> - a tensor is similar to that of a matrix except that it may have an arbitrary number of indices</li>
+</ul>
+</div></blockquote>
+<div class="section" id="main-contents">
+<h2>Main contents<a class="headerlink" href="#main-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="objectives">
+<h3>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Get familiar with NumPy</li>
+<li>Using NumPy get familiar with basic linear algebra</li>
+</ol>
+</div></blockquote>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="numpy-1.html">NumPy - Basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="numpy-1.html#arrays">Arrays</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="numpy-2.html">NumPy - having fun</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="numpy-2.html#quick-reference">Quick reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numpy-2.html#basic-operations">Basic operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numpy-2.html#indexing-slicing-and-more">Indexing, slicing and more</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linear-algebra-1.html">Linear algebra - part 1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="linear-algebra-1.html#goals">Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-algebra-1.html#basic-properties-of-matrices">Basic properties of matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-algebra-1.html#properties-of-inverse">Properties of Inverse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linear-algebra-2.html">Linear algebra - part 2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="linear-algebra-2.html#goals">Goals</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="works-cited">
+<h3>Works cited<a class="headerlink" href="#works-cited" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">Works cited</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="more-resources">
+<h3>More resources<a class="headerlink" href="#more-resources" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="numpy.scipy.org">NumPy homepage</a></li>
+<li><a class="reference external" href="http://scipy.org/NumPy_Tutorial">Official NumPy tutorial</a></li>
+<li><a class="reference external" href="http://www.scipy.org/NumPy_for_Matlab_Users">NumPy for MATLAB users</a></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="numpy-1.html" title="NumPy - Basics"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">linear-algebra</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Adam Richards.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+.. linear algebra, linear regression
+   
+
+Assumptions and Residuals
+=======================================
+
+High level goals for the day
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  * Create linear regression model
+  * Read and interpret outputs of linear regression models
+  * Troubleshoot linear regression models, i.e. multicollinearity and heteroscedasticity
+
+Linear regression review
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. math::   
+
+   Y = \beta_{0} + \beta_{1}\mathbf{X}_{1} + \beta_{2}\mathbf{X}_{2} + ... \beta_{p}\mathbf{X}_{p} + \epsilon
+
+
+
+.. figure:: review-1.png
+   :scale: 95%
+   :align: center
+   :alt: review 1
+   :figclass: align-center
+
+.. figure:: review-2.png
+   :scale: 95%
+   :align: center
+   :alt: review 2
+   :figclass: align-center
+
+.. figure:: review-3.png
+   :scale: 95%
+   :align: center
+   :alt: review 3
+   :figclass: align-center
+
+	      
+Assumptions
+^^^^^^^^^^^^^^^^^
+
+1. Linearity: :math:`y = x^{T} \beta + \epsilon`
+2. **Full rank**: :math:`X` has full rank (rank = K)
+3. **Exogeneity** of regressors: :math:`E[\epsilon|X] = 0`
+4. Spherical errors, i.e., homoscedastic and not autocorrelated:
+
+   * Var :math:`[\epsilon_{i}|X ] = \sigma^2 , \forall i`
+   * Cov :math:`[\epsilon_{i}, \epsilon_{j}|X] = 0, \forall i \neq j`
+   * Normally distributed errors: :math:`\epsilon|\mathbf{X} \sim N(0, \sigma^{2} I)`

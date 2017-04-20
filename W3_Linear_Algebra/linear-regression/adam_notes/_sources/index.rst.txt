@@ -1,0 +1,48 @@
+.. advanced-plotting documentation master file, created by
+   sphinx-quickstart on Tue Oct 11 15:24:00 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Linear Regression
+=======================================
+
+
+Day 1 
+^^^^^^^^^^^^^^^^^^^^^
+
+.. toctree::
+   :maxdepth: 2
+   	      
+   linear-regression-1
+   linear-regression-2
+   
+   
+Day 2 
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. toctree::
+   :maxdepth: 2
+
+   assumptions-and-residuals
+   generalized-linear-models
+
+Resources
+-------------
+
+Works cited
+^^^^^^^^^^^^^^^
+
+.. toctree::
+   :maxdepth: 1
+
+   references
+
+Additional resources
+^^^^^^^^^^^^^^^^^^^^^^
+
+   * `The sklearn linear regression example <http://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html#sphx-glr-auto-examples-linear-model-plot-ols-py>`_
+   * `The sklearn linear models examples <http://scikit-learn.org/stable/modules/linear_model.html>`_  
+   * :download:`Nice reference pdf created by E. Wellinger <linear-regression-wellinger.pdf>` 
+
+
+  

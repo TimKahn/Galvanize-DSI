@@ -1,0 +1,32 @@
+.. linear algebra, linear regression
+   
+
+Linear regression - part 2
+=======================================
+
+
+  1. State assumptions of linear regression model
+  2. Estimate a linear regression model
+
+  3. Look at the R and Bayesian ways of implementing linear regression
+
+
+Linear model evaluation
+----------------------------
+
+Linear models in R
+----------------------
+
+.. literalinclude:: linear-regression.R
+   :language: r
+
+:download:`snakes.csv`
+:download:`linear-regression.R`
+
+	  
+Linear regression in PyMC3
+------------------------------
+
+.. plot:: bayes-linear-regression.py
+   :include-source:
+	     

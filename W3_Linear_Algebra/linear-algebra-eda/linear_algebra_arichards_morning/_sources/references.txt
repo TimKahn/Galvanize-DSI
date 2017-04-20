@@ -1,0 +1,13 @@
+.. works cited file, created by ARichards
+
+Works cited
+==============
+
+.. [Bishop06] C. M. Bishop. *Pattern Recognition and Machine Learning*,
+	      Springer (2006).
+
+.. [Duda01]   R. O. Duda, P. E. Hart, & D. G. Stork. *Pattern Classification*,
+	      John Wiley & Sons, Inc., (2001).
+
+.. [Goodfellow16] I. Goodfellow, Y Bengio. *Deep Learning*,
+                  somepublisher, (2016).				

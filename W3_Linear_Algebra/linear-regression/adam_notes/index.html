@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Linear Regression &mdash; linear-regression 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="linear-regression 1.0 documentation" href="#"/>
+        <link rel="next" title="Linear regression - part 1" href="linear-regression-1.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> linear-regression
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="linear-regression-1.html">Linear regression - part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear-regression-2.html">Linear regression - part 2</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="assumptions-and-residuals.html">Assumptions and Residuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generalized-linear-models.html">Generalized linear models</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">Works cited</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">linear-regression</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Linear Regression</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linear-regression">
+<h1>Linear Regression<a class="headerlink" href="#linear-regression" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="day-1">
+<h2>Day 1<a class="headerlink" href="#day-1" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="linear-regression-1.html">Linear regression - part 1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-1.html#objectives">Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-1.html#many-ways-to-say-the-same-thing">Many ways to say the same thing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-1.html#two-main-types-of-machine-learning-models">Two main types of machine learning models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-1.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-1.html#size-of-data">Size of data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-1.html#simple-linear-regression">Simple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-1.html#multiple-linear-regression">Multiple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-1.html#notation">Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-1.html#assumptions">Assumptions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linear-regression-2.html">Linear regression - part 2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-2.html#linear-models-in-r">Linear models in R</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear-regression-2.html#linear-regression-in-pymc3">Linear regression in PyMC3</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="day-2">
+<h2>Day 2<a class="headerlink" href="#day-2" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="assumptions-and-residuals.html">Assumptions and Residuals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="assumptions-and-residuals.html#high-level-goals-for-the-day">High level goals for the day</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assumptions-and-residuals.html#linear-regression-review">Linear regression review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assumptions-and-residuals.html#assumptions">Assumptions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generalized-linear-models.html">Generalized linear models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generalized-linear-models.html#linear-models-in-r">Linear models in R</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="resources">
+<h3>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="works-cited">
+<h2>Works cited<a class="headerlink" href="#works-cited" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">Works cited</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="additional-resources">
+<h2>Additional resources<a class="headerlink" href="#additional-resources" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html#sphx-glr-auto-examples-linear-model-plot-ols-py">The sklearn linear regression example</a></li>
+<li><a class="reference external" href="http://scikit-learn.org/stable/modules/linear_model.html">The sklearn linear models examples</a></li>
+<li><a class="reference download internal" href="_downloads/linear-regression-wellinger.pdf" download=""><code class="xref download docutils literal"><span class="pre">Nice</span> <span class="pre">reference</span> <span class="pre">pdf</span> <span class="pre">created</span> <span class="pre">by</span> <span class="pre">E.</span> <span class="pre">Wellinger</span></code></a></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linear-regression-1.html" class="btn btn-neutral float-right" title="Linear regression - part 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Galvanize DSI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+.. advanced-plotting documentation master file, created by
+   sphinx-quickstart on Tue Oct 11 15:24:00 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Linear algebra
+======================
+
+Within data science and perhaps at its core is the field of **Machine learning**.
+
+  * **Supervised learning** - learn a mapping from inputs :math:`x` to outputs :math:`y` (given :math:`\mathcal{D}`)
+  * **Unsuperviesed learning** - given only :math:`x` the goal is to find interesting patterns
+
+.. note::
+       
+   :math:`x` is often stored in an :math:`N x D` matrix.  **Linear
+   algebra** is the branch of mathematics that works directly with
+   matrices and it turns out that it is really useful for solving
+   systems of linear equations like those from linear regression.
+
+   
+Before we jump in lets make sure we have a few other definations in mind
+
+  * **Scaler** - a single real number (ints, floats etc) 
+  * **Vector** - a 1D array of numbers (real, binary, integer etc)
+  * **Matrix** - a 2D array of numbers 
+  * **Tensor** - a tensor is similar to that of a matrix except that it may have an arbitrary number of indices
+      
+Main contents    
+---------------------
+
+Objectives
+^^^^^^^^^^^^^^^
+
+  1. Get familiar with NumPy
+  2. Using NumPy get familiar with basic linear algebra 
+
+.. toctree::
+   :maxdepth: 2
+
+   numpy-1
+   numpy-2
+   linear-algebra-1
+   linear-algebra-2
+   
+Resources
+-------------
+
+Works cited
+^^^^^^^^^^^^^^^
+
+.. toctree::
+   :maxdepth: 1
+
+   references
+
+More resources
+^^^^^^^^^^^^^^^^^^^^^^
+
+   * `NumPy homepage <numpy.scipy.org>`_
+   * `Official NumPy tutorial <http://scipy.org/NumPy_Tutorial>`_
+   * `NumPy for MATLAB users <http://www.scipy.org/NumPy_for_Matlab_Users>`_
+
+   
