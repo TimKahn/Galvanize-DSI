@@ -1,0 +1,267 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Matplotlib - event handling &mdash; advanced-plotting 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="top" title="advanced-plotting 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Matplotlib - animations" href="mpl-animations.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mpl-animations.html" title="Matplotlib - animations"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">advanced-plotting 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Matplotlib - event handling</a><ul>
+<li><a class="reference internal" href="#binding-to-keypress-events">Binding to keypress events</a></li>
+<li><a class="reference internal" href="#selecting-points">Selecting points</a></li>
+<li><a class="reference internal" href="#creating-plots-on-click">Creating plots on click</a></li>
+<li><a class="reference internal" href="#where-do-we-go-from-here">Where do we go from here?</a></li>
+<li><a class="reference internal" href="#football-games-data-example">Football games data example</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mpl-animations.html"
+                        title="previous chapter">Matplotlib - animations</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/mpl-event-handling.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="matplotlib-event-handling">
+<h1>Matplotlib - event handling<a class="headerlink" href="#matplotlib-event-handling" title="Permalink to this headline">¶</a></h1>
+<p>Sometimes we have a lot going on inside a data visualization and it
+can be useful to interact with the plot itself in order to aid data
+exploration efforts.</p>
+<p><a class="reference external" href="http://matplotlib.org/users/event_handling.html">Event handling in MPL</a> starts to get into
+an area that can quickly get complicated.  There are many different
+interface toolkits: wxpython, tkinter, qt4, gtk, and macosx, but still
+MPL can work with all of these interfaces.</p>
+<p><strong>Go through the mentioned event handling webpage to understand how you can bind clicks, mouse movement and much more</strong>.  This is one place in the MPL docs that is well done.</p>
+<p>Also <a class="reference external" href="http://matplotlib.org/examples/event_handling/index.html">you can use the examples</a>.</p>
+<div class="section" id="binding-to-keypress-events">
+<h2>Binding to keypress events<a class="headerlink" href="#binding-to-keypress-events" title="Permalink to this headline">¶</a></h2>
+<p>This is basically the minimal working example.  Run it and click on the plot.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">onclick</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;button=</span><span class="si">%d</span><span class="s1">, x=</span><span class="si">%d</span><span class="s1">, y=</span><span class="si">%d</span><span class="s1">, xdata=</span><span class="si">%f</span><span class="s1">, ydata=</span><span class="si">%f</span><span class="s1">&#39;</span> <span class="o">%</span>
+          <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">xdata</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">ydata</span><span class="p">))</span>
+
+<span class="n">cid</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s1">&#39;button_press_event&#39;</span><span class="p">,</span> <span class="n">onclick</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./src/keypress_basics.py">Source code</a>, <a class="reference external" href="./src/keypress_basics.png">png</a>, <a class="reference external" href="./src/keypress_basics.hires.png">hires.png</a>, <a class="reference external" href="./src/keypress_basics.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/keypress_basics.png" src="_images/keypress_basics.png" />
+</div>
+</div>
+<div class="section" id="selecting-points">
+<h2>Selecting points<a class="headerlink" href="#selecting-points" title="Permalink to this headline">¶</a></h2>
+<p>The following script plots a basic scatter of points, but when you run
+it you can <strong>draw</strong> a lasso around an arbitrary group of points.  If you look at
+your terminal after you have selected the points you will be asked to hit a key.
+Once you do the points you drew are then printed.</p>
+<p>The print statement after capturing some points is an example of event
+handling, where that could be replaced by plot again or save to file
+etc.</p>
+</div>
+<div class="section" id="creating-plots-on-click">
+<h2>Creating plots on click<a class="headerlink" href="#creating-plots-on-click" title="Permalink to this headline">¶</a></h2>
+<p>Imagine that you have a whole bunch of posteriors that you want to
+compare.  As an example, maybe I am looking at the results of a model
+that predicts radon levels in houses and the model accounts for an
+effect at the level of county.  Well that would yield a posterior
+distribution for each county. Instead of looking through potentially
+hundreds of plots you could summarize the means in a scatter plot
+standard deviations.  Ideally, when I click on a given point another
+plot will pop up displaying the posterior for that point.</p>
+<p>This is what the following code would accomplish.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">compute the mean and standard deviation (stddev) of 100 data sets and plot</span>
+<span class="sd">mean vs stddev.  When you click on one of the mu, sigma points, plot the raw</span>
+<span class="sd">data from the dataset that generated the mean and stddev.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;click on point to plot time series&#39;</span><span class="p">)</span>
+<span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">picker</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># 5 points tolerance</span>
+
+<span class="k">def</span> <span class="nf">onpick</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">artist</span> <span class="o">!=</span> <span class="n">line</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">ind</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">N</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">figi</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">subplotnum</span><span class="p">,</span> <span class="n">dataind</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">ind</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">figi</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">subplotnum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">dataind</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;mu=</span><span class="si">%1.3f</span><span class="se">\n</span><span class="s1">sigma=</span><span class="si">%1.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">dataind</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="n">dataind</span><span class="p">]),</span>
+                <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">figi</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s1">&#39;pick_event&#39;</span><span class="p">,</span> <span class="n">onpick</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you want to do this in as single plot with subplots you can use the <a class="reference external" href="http://matplotlib.org/examples/event_handling/data_browser.html">data browser example</a>.</p>
+</div>
+<div class="section" id="where-do-we-go-from-here">
+<h2>Where do we go from here?<a class="headerlink" href="#where-do-we-go-from-here" title="Permalink to this headline">¶</a></h2>
+<p>If capturing events are not enough and you want to stay in the MPL
+environment, then there are a couple of directions you can go.  First
+you could create a widget (checkbuttons, sliders etc).  If a couple of
+buttons and a slider will not suit your needs then you could embed
+matplotlib in a fully featured user interface.  This is well beyond
+the scope of what we are trying to accomplish here, but it is good to
+know that working examples are maintained as part of MPL for a number
+of toolkits.  Desktop application (i.e. user interfaces) have largely
+been replaced by web-applications, but they do still exist.</p>
+<p>My suggestion just to know what you can do if you wanted would be to
+at download a couple of the examples from the widgets (e.g. slider
+demo) and run them.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://matplotlib.org/examples/widgets/index.html">widgets examples</a></li>
+<li><a class="reference external" href="http://matplotlib.org/examples/user_interfaces/index.html">user interface examples</a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="football-games-data-example">
+<h2>Football games data example<a class="headerlink" href="#football-games-data-example" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">football fan</p>
+<p>&#8220;You manager is a (American) football fan and she gets
+really excited when the season gets rolling.  She is also
+quite busy so she does not have time to follow every game,
+but she loves data visualization.  The goal here is to
+impress her with a visualization tool quickly that will
+allow you to navigate football game results as the season
+progresses.&#8221;</p>
+</div>
+<p>Here are the results of 10 season&#8217;s of football results 1981, 1983-1986, 1988-1992. The source for these data is <a class="reference external" href="http://www.stat.columbia.edu/~gelman/book/data">Andrew Gelman&#8217;s book</a>.</p>
+<p>This is an open ended question, but here are some ideas.</p>
+<blockquote>
+<div><ul class="simple">
+<li>[easy] Modify <strong>lasso example</strong> to print to the terminal information about those games (just plot spreads)</li>
+<li>[harder] Modify a <strong>creating plots on a click</strong> example to show spreads when you click on a team</li>
+<li>[even harder] Plot the lasso example for teams ranked by number of wins then using the <a class="reference external" href="http://matplotlib.org/examples/event_handling/data_browser.html">data browser example</a> display additional win/loss/spread information with a click.</li>
+<li>[hint] - You can limit your data to a given year to make it easier to work with</li>
+</ul>
+</div></blockquote>
+<p>The data are available in the csv below.  If you are curious how to parse the data into a csv the script is below as well.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" href="_downloads/munge_football.py" download=""><code class="xref download docutils literal"><span class="pre">script-used-to-make-csv</span></code></a></li>
+<li><a class="reference download internal" href="_downloads/football.csv" download=""><code class="xref download docutils literal"><span class="pre">football.csv</span></code></a></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="mpl-animations.html" title="Matplotlib - animations"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">advanced-plotting 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Adam Richards.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.5.
+    </div>
+  </body>
+</html>

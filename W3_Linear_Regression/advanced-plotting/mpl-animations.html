@@ -1,0 +1,210 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Matplotlib - animations &mdash; advanced-plotting 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="top" title="advanced-plotting 1.0 documentation" href="index.html" />
+    <link rel="next" title="Matplotlib - event handling" href="mpl-event-handling.html" />
+    <link rel="prev" title="Matplotlib - more more" href="mpl-more-more.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mpl-event-handling.html" title="Matplotlib - event handling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mpl-more-more.html" title="Matplotlib - more more"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">advanced-plotting 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Matplotlib - animations</a><ul>
+<li><a class="reference internal" href="#resources-and-notable-examples">Resources and notable examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mpl-more-more.html"
+                        title="previous chapter">Matplotlib - more more</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mpl-event-handling.html"
+                        title="next chapter">Matplotlib - event handling</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/mpl-animations.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="matplotlib-animations">
+<h1>Matplotlib - animations<a class="headerlink" href="#matplotlib-animations" title="Permalink to this headline">¶</a></h1>
+<p>Sometimes a plot is not enough we need to tell a story with our plot.
+A series of plots might cut it but really animations are just that&#8212;
+a series of plots.  There are a number of examples of <a class="reference external" href="http://matplotlib.org/examples/animation/index.html">matplotlib animations</a> and we will go through a few to illustrate the underlying themes.</p>
+<p>If we run an animation example (<cite>plt.show()</cite>) then a matplotlib plot instance shows up and we see the animation.  This is fine if we create something for our selves but it is good to know how to save these animations as videos.  You will need <a class="reference external" href="https://ffmpeg.org">the encoding library FFmpeg</a> installed to make this happen.</p>
+<dl class="docutils">
+<dt>On Ubuntu:</dt>
+<dd>sudo apt-get install ffmpeg</dd>
+<dt>On OSX:</dt>
+<dd>brew install ffmpeg</dd>
+</dl>
+<p>You will see that in the next example we are setting things like frames per second (fps) and bitrate&#8211;bet you did not think you would be making movies! Lets get started with this one.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="c1">## adjust the backend</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>
+
+<span class="c1">## make imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.animation</span> <span class="k">as</span> <span class="nn">animation</span>
+
+<span class="c1"># set up formatting for the movie files</span>
+<span class="n">Writer</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">writers</span><span class="p">[</span><span class="s1">&#39;ffmpeg&#39;</span><span class="p">]</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">Writer</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">artist</span><span class="o">=</span><span class="s1">&#39;Me&#39;</span><span class="p">),</span> <span class="n">bitrate</span><span class="o">=</span><span class="mi">1800</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s1">&#39;h264&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;dark_background&#39;</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;my cool animation&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">set_ydata</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">i</span><span class="o">/</span><span class="mf">10.0</span><span class="p">))</span>  <span class="c1"># update the data</span>
+    <span class="k">return</span> <span class="n">line</span><span class="p">,</span>
+
+<span class="c1"># Init only required for blitting to give a clean slate.</span>
+<span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">set_ydata</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">line</span><span class="p">,</span>
+
+<span class="n">ani</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
+                              <span class="n">interval</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">ani</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;../_static/lines.mp4&#39;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<video controls src="_static/lines.mp4"></video><p>There is also the <a class="reference external" href="http://matplotlib.org/examples/animation/moviewriter.html">moviewriter way to do this</a> in case you cannot get this methods working for your example.</p>
+<p>As a side note if you want to embed this into a jupyter notebook.  Here is a page that <a class="reference external" href="http://louistiao.me/posts/notebooks/embedding-matplotlib-animations-in-jupyter-notebooks/">shows you how</a>.  Basically, it is just the following tow lines added to your notebook.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">ani</span><span class="o">.</span><span class="n">to_html5_video</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first">time-series animation</p>
+<p>&#8220;I really like the way plot.ly makes time series plots so I would like you to know how to use them.
+However, sometimes I want to watch the time series progress rather than having a global view.
+Can you please come up with something that can animate a time-series plot for me.&#8221;</p>
+</div>
+<p>Hints:</p>
+<blockquote>
+<div><ul class="simple">
+<li>use the following <a class="reference external" href="https://plot.ly/pandas/time-series/">plot.ly time series plot</a></li>
+<li>do not get too caught up with plot.ly, but know it is a great visualization tool</li>
+<li>Use the same time-series data as used in the example</li>
+<li>np.sin is just a function</li>
+<li><a class="reference external" href="http://matplotlib.org/examples/animation/subplots.html">the subplots animation</a> might be helpful</li>
+</ul>
+</div></blockquote>
+<div class="section" id="resources-and-notable-examples">
+<h2>Resources and notable examples<a class="headerlink" href="#resources-and-notable-examples" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://jakevdp.github.io/blog/2012/08/18/matplotlib-animation-tutorial/">Decent blog post with more details</a></li>
+<li><a class="reference external" href="http://jakevdp.github.io/blog/2012/09/05/quantum-python">Animating the Schrodinger Equation</a></li>
+<li><a class="reference external" href="http://matplotlib.org/examples/animation/bayes_update.html">Bayes update</a></li>
+<li><a class="reference external" href="http://matplotlib.org/examples/animation/histogram.html">Histogram</a></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="mpl-event-handling.html" title="Matplotlib - event handling"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mpl-more-more.html" title="Matplotlib - more more"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">advanced-plotting 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Adam Richards.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.5.
+    </div>
+  </body>
+</html>

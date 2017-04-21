@@ -1,0 +1,59 @@
+.. advanced-plotting documentation master file, created by
+   sphinx-quickstart on Tue Oct 11 15:24:00 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Advanced plotting and visualization
+======================================
+
+Welcome to the take home version of advanced plotting.
+
+.. note:: This is meant as an additional resouce to `the Galvanize repo
+	  <https://github.com/zipfian/data-viz-for-ds>`_ 
+
+Leaning objectives
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  1. Understand how ``patches`` and ``collections`` are used in MPL
+  2. Create a line plot animation using MPL
+  3. Become familiar with some of the event-handling features available in MPL
+
+In general the goal here is that you become aware of MPL features and
+capabilities that we have not had time to cover.  This document also
+serves as a resource for additional topics in advanced plotting and visualization. 
+     
+Two of the most common ways that we use data visualization is through 
+
+  * Exploratory data visualization
+  * As part of a deliverable
+
+You will always be improving your game when it comes to data
+visualization and the number of tools continues to increase.
+These are some of the tools that you will likely come across.
+
+  * `Seaborn <https://stanford.edu/~mwaskom/software/seaborn>`_
+  * `Bokeh <http://bokeh.pydata.org/en/latest/>`_
+  * `mayavi <http://docs.enthought.com/mayavi/mayavi>`_
+  * `plotly <https://plot.ly>`_  
+  * `dygraphs <http://dygraphs.com/>`_
+  * `D3.js <https://d3js.org>`_
+
+Here we focus on discussing the features of matplotlib (MPL) that have not been talked about to date, but with the above options there are alternative approaches that are reasonable.
+
+The first section (more-more) is for your reference.  For the remaining two sections we will play out a scenario.  Lets imagine that your manager is very particular about how she likes to visualize data.  In fact, this is your first week on the job and your boss has asked you to write some visualization tools to meet her data visualization needs.
+
+.. topic:: TODO
+
+	   When you see a highlighted region like this there is a 
+           widget that you have been asked to make.  These widgets
+           only need to be minimial working examples.
+
+Contents:
+
+.. toctree::
+   :maxdepth: 1
+
+   mpl-more-more
+   mpl-animations
+   mpl-event-handling
+    	      
