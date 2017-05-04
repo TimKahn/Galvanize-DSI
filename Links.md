@@ -35,5 +35,12 @@
 * http://statsmodels.sourceforge.net/0.6.0/_modules/statsmodels/graphics/regressionplots.html
 * r-style regression in python: http://statsmodels.sourceforge.net/devel/example_formulas.html
 
-#Week 4 - supervised learning
+# Week 4 - supervised learning
 * Visual intro to machine learning: http://www.r2d3.us/visual-intro-to-machine-learning-part-1/
+
+# Week 5 - special topics
+* Visual explanation of kernels for CNN: http://setosa.io/ev/image-kernels/
+* Google Seq2Seq (autoencoder-ish): https://google.github.io/seq2seq/
+
+### nlp and text analytics
+* http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html

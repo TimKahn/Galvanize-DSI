@@ -5,3 +5,7 @@
 * Resume guidelines: https://docs.google.com/presentation/d/1APaSVf7zpkHtoy7ApPF1PmOOyoCPwY8b7N-Qmo1rNKc/edit#slide=id.p
 * Alumni resumes: https://drive.google.com/drive/folders/0ByiB4jbEp4BKUWwtMjN3bHY3Z3M
 * Resume checklist: https://docs.google.com/document/d/1vrxzY7eV23hv22Nu47Dn65dXp1ttYWCHzhrgKjocBtc/edit?usp=sharing
+* Cover letters: https://docs.google.com/presentation/d/1kG-3CjLbSq4WuxM9NRekW5Witu16467VIl4D_1Z9jaI/edit?usp=sharing
+
+# Links
+* https://www.themuse.com/advice/31-attentiongrabbing-cover-letter-examples
