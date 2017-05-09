@@ -1,4 +1,7 @@
-# Week 1 - fundamentals
+# Week 1 etc. - fundamentals
+### general python resources
+* https://awesome-python.com/
+
 ### numpy
 * https://github.com/sallamander/just-enough/blob/master/numpy.md
 
@@ -24,6 +27,7 @@
 * http://www.kdnuggets.com/2016/12/datascience-introduction-bayesian-inference.html
 * to install PyMC3: `pip install --process-dependency-links git+https://github.com/pymc-devs/pymc3`
 * *Beta distribution:* https://stats.stackexchange.com/questions/47771/what-is-the-intuition-behind-beta-distribution
+* Bayesian optimization of ML hyperparameters: https://github.com/fmfn/BayesianOptimization
 
 # Week 3 - linear models
 ### linear algebra
@@ -41,6 +45,11 @@
 # Week 5 - special topics
 * Visual explanation of kernels for CNN: http://setosa.io/ev/image-kernels/
 * Google Seq2Seq (autoencoder-ish): https://google.github.io/seq2seq/
+* Keras: https://github.com/fchollet/keras-resources
 
 ### nlp and text analytics
 * http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
+
+# Week 6 - unsupervised learning
+* Covariance: http://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/
+* Visual explanation of PCA: http://setosa.io/ev/principal-component-analysis/
