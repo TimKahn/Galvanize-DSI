@@ -1,0 +1,9 @@
+#Suit      Number  Portrait    Expression
+#----------------------------------------
+spades     ace     Kirk        confident
+spades     king    Spock       welcoming
+diamonds   jack    McCoy       put-upon
+hearts     10      Khan        deadly
+hearts     8       Chekov      questioning
+clubs      jack    Kirk        desparate
+diamonds   7       Spock       knowing
