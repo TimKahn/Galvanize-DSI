@@ -1,0 +1,117 @@
+.. galvanize, created by ARichards
+
+Cython
+======================
+
+   
+C code with Python
+-----------------------------------------
+
+Suppose we have some c code...
+
+.. code:: c
+
+
+   double c_fib(int n) {
+   double tmp, a = 0, b = 1;
+   for (int i=0; i<n; i++) {
+       tmp = a;
+       a = a + b;
+       b = tmp;
+   }
+   return a;
+   }
+
+1. Use gcc and ctypes      
+2. Use clang and bitey
+3. Use Cython
+
+
+Cython - wrapping C code with Python
+-----------------------------------------
+
+For speed purposes this is amazing.
+
+Here is the `hello world` example.  First we need a `setup.py` file:
+
+.. literalinclude:: setup.py
+   :language: python
+
+
+Also need the pyx file
+--------------------------------
+	      
+And another file `helloworld.pyx`.  
+
+.. literalinclude:: helloworld.pyx
+   :language: python
+
+A .pyx file is compiled by Cython to a .c file
+	      
+Build it
+-------------
+	      
+We build the file to produce `helloworld.so` in unix or `helloworld.dll` in Windows.
+
+.. code-block:: none
+
+   python setup.py build_ext --inplace		
+   
+Then we may import the code directly into python
+
+.. code-block:: python
+   
+  import helloworld
+
+
+The Great circle problem
+-----------------------------
+
+.. literalinclude:: CythonGreatCircle.pyx
+   :language: c
+
+
+Great circle setup.py
+-------------------------
+	      
+.. literalinclude:: setup_gc.py
+   :language: python
+
+Run it
+--------------------
+	      
+.. code-block:: none
+
+   ~$ python setup_gc.py build_ext --inplace
+
+.. code-block:: python
+
+   import time
+   from greatcircle import great_circle
+   lon1,lat1,lon2,lat2 = 42,0.5,-13,-32
+   n = 1e06
+   mat = np.zeros((n,4),)
+   mat = mat + [lon1,lat1,lon2,lat2]
+
+   timeStart = time.time()
+   for i in range(mat.shape[0]):
+       x = great_circle(*mat[i,:])
+   print time.strftime('%H:%M:%S', time.gmtime(time.time()-timeStart))
+
+
+More information
+---------------------
+
+   * `A blog I borrowed some code from <http://blog.perrygeo.net/2008/04/19/a-quick-cython-introduction>`_
+   * `Cython documentation <http://docs.cython.org/src/userguide>`_
+   * `Extending Python with C or C++ <http://docs.python.org/2/extending/extending.html>`_
+   * `Writing R extensions <http://cran.r-project.org/doc/manuals/R-exts.html>`_
+
+Contents
+---------------------------------------------
+
+   * :doc:`speedy-intro`
+   * :doc:`subprocessing`
+   * :doc:`multiprocessing`
+   * :doc:`cython`
+   * :doc:`pycuda`

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>HPC Environments &mdash; speedy-python</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="_static/single.css" type="text/css" />
+    
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/common.js"></script>
+    
+    <script type="text/javascript" src="_static/slides.js"></script>
+    <script type="text/javascript" src="_static/sync.js"></script>
+    <script type="text/javascript" src="_static/controller.js"></script>
+    <script type="text/javascript" src="_static/init.js"></script>
+    
+    
+    <link rel="top" title="speedy-python" href="index.html" />
+    <link rel="prev" title="CUDA" href="pycuda.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="slide level-1" id="hpc-environments">
+
+<h1>HPC Environments</h1>
+
+
+
+
+
+</article>
+<article class="slide level-1" id="simple-example">
+
+<h1>Simple example</h1>
+
+<p>Save the following file as <cite>runtest.sh</cite></p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#$ -S /bin/bash</span>
+<span class="c1">#$ -j yes</span>
+<span class="c1">#S -M myemail@somewhere.com</span>
+<span class="c1">#$ -o /full/path/to/queue/out.log  </span>
+
+<span class="c1"># My command lines I want to run on the cluster</span>
+/usr/bin/python /full/path/to/test.py
+</pre></div>
+</div>
+<p>The first two lines setup the envrionment as a bash envronment.  The <cite>-j</cite> specifies that standard out and standard err are put together in the out file.
+The <cite>-o</cite> is the file path for the out file.</p>
+<p>Replace your email and change the two file paths to be real ones.
+Then in the same directory as <cite>runtest.sh</cite> save the following python script as <cite>test.py</cite>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python</span>
+
+<span class="k">print</span> <span class="s1">&#39;hello world&#39;</span>
+<span class="k">print</span>  <span class="mi">2</span><span class="o">+</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p><a class="reference download internal" href="_downloads/test.py" download=""><code class="xref download docutils literal"><span class="pre">test.py</span></code></a></p>
+<p>This is basically the standard hello world example.</p>
+<p>Finally, submit the job to the queue using</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>qsub runtest.sh
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-1" id="a-more-involved-example">
+
+<h1>A more involved example</h1>
+
+<p>This example uses python to generate and submit the bash scripts.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Here we break a problem into &#39;chunks&#39; and send the chunks to the cluster</span>
+
+<span class="sd">The idea is that calculating all pairwise distance in a graph</span>
+<span class="sd">can be done more efficiently by using multiple processors</span>
+
+<span class="sd">We assume that the distances are symetrical so there aer </span>
+
+<span class="sd">    ((n*(n+1))/2) - n</span>
+
+<span class="sd">total paths to find.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">shutil</span><span class="o">,</span><span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
+
+<span class="c1">## ensure the queue directory present and clean</span>
+<span class="n">baseDir</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+<span class="n">queueDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span><span class="s1">&#39;queue&#39;</span><span class="p">)</span>
+<span class="n">resultsDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span><span class="s1">&#39;results&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">dirName</span> <span class="ow">in</span> <span class="p">[</span><span class="n">queueDir</span><span class="p">,</span><span class="n">resultsDir</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dirName</span><span class="p">):</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dirName</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dirName</span><span class="p">)</span>
+
+<span class="c1">## initialize the graph                                                               </span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">weighted</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">totDistances</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">n</span>
+<span class="n">totDistancesAdded</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">print</span> <span class="s2">&quot;Graph size = </span><span class="si">%s</span><span class="s2">, total pw distances = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">totDistances</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">j</span><span class="p">:</span>
+            <span class="k">continue</span>
+        
+        <span class="n">rn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">),</span><span class="n">weight</span><span class="o">=</span><span class="n">rn</span><span class="p">)</span>
+        <span class="n">totDistancesAdded</span> <span class="o">+=</span><span class="mi">1</span>
+
+<span class="c1">## error checking</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;G does not contain correct number of nodes (</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="o">%</span><span class="p">())</span>
+<span class="k">if</span> <span class="n">totDistances</span> <span class="o">!=</span> <span class="n">totDistancesAdded</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Incorrect number of distances in G (</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">totDistances</span><span class="p">,</span><span class="n">totDistancesAdded</span><span class="p">))</span>
+
+<span class="c1">## save the graph</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">write_gpickle</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span><span class="s2">&quot;network.pickle&quot;</span><span class="p">))</span>
+
+<span class="c1">## break the graph into chunks</span>
+<span class="n">chunks</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">stopPoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">totDistances</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">totDistances</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">chunks</span><span class="p">))))</span>
+<span class="k">if</span> <span class="n">stopPoints</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">totDistances</span><span class="p">:</span>
+    <span class="n">stopPoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">stopPoints</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">totDistances</span><span class="p">])])</span>
+
+<span class="k">print</span> <span class="s1">&#39;... submitting </span><span class="si">%s</span><span class="s1"> jobs&#39;</span><span class="o">%</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stopPoints</span><span class="p">))</span>
+
+<span class="n">begin</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">chunk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">stopPoints</span><span class="o">.</span><span class="n">size</span><span class="p">)):</span>
+    <span class="n">stop</span> <span class="o">=</span> <span class="n">stopPoints</span><span class="p">[</span><span class="n">chunk</span><span class="p">]</span> 
+    
+    <span class="c1">## make a file for each chunk</span>
+    <span class="n">queueFileName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">queueDir</span><span class="p">,</span><span class="s2">&quot;pwdist</span><span class="si">%s</span><span class="s2">.sh&quot;</span><span class="o">%</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">queueLogName</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">queueDir</span><span class="p">,</span><span class="s2">&quot;pwdist</span><span class="si">%s</span><span class="s2">.log&quot;</span><span class="o">%</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">script</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span><span class="s2">&quot;runDistances.py&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; -b </span><span class="si">%s</span><span class="s2"> -s </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span><span class="n">stop</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">queueFileName</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#!/bin/bash</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> 
+            <span class="s2">&quot;#$ -S /bin/bash</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+            <span class="s2">&quot;#$ -j yes</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+            <span class="s2">&quot;#S -M myemail@somewhere.com</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+            <span class="s2">&quot;#$ -o </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">queueLogName</span> <span class="o">+</span> 
+            <span class="s2">&quot;/usr/bin/python &quot;</span><span class="o">+</span> <span class="n">script</span><span class="p">)</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1">## submit the file to the cluster</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;qsub &quot;</span> <span class="o">+</span> <span class="n">queueFileName</span><span class="p">)</span>
+    <span class="n">begin</span> <span class="o">=</span> <span class="n">stop</span>
+</pre></div>
+</div>
+<p><a class="reference download internal" href="_downloads/submitDistancesScripts.py" download=""><code class="xref download docutils literal"><span class="pre">submitDistancesScripts.py</span></code></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span><span class="o">,</span><span class="nn">getopt</span><span class="o">,</span><span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
+
+<span class="c1">### process inputs   </span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; -b (begin) -s (stop)&quot;</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Incorrect number of args&quot;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">optlist</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="o">.</span><span class="n">getopt</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="s1">&#39;b:s:&#39;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">getopt</span><span class="o">.</span><span class="n">GetoptError</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;-b (begin) -s (stop)&quot;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+<span class="n">begin</span><span class="p">,</span><span class="n">stop</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span><span class="bp">None</span>
+<span class="k">for</span> <span class="n">o</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">optlist</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">o</span> <span class="o">==</span> <span class="s1">&#39;-b&#39;</span><span class="p">:</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">o</span> <span class="o">==</span> <span class="s1">&#39;-s&#39;</span><span class="p">:</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="c1">## load the network</span>
+<span class="n">baseDir</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)))</span>
+<span class="n">resultsDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span><span class="s1">&#39;results&#39;</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">read_gpickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span><span class="s2">&quot;network.pickle&quot;</span><span class="p">))</span>
+
+<span class="c1">## create a results file</span>
+<span class="n">outFile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resultsDir</span><span class="p">,</span><span class="s2">&quot;out-</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">.csv&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span><span class="n">stop</span><span class="p">))</span>
+<span class="n">outFid</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outFile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">outFid</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;i&quot;</span><span class="p">,</span><span class="s2">&quot;j&quot;</span><span class="p">,</span><span class="s2">&quot;distance&quot;</span><span class="p">])</span>
+
+<span class="n">pathsToFind</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span><span class="n">stop</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
+<span class="n">count</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">j</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">pathsToFind</span><span class="p">:</span>
+            <span class="n">length</span><span class="p">,</span><span class="n">path</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">bidirectional_dijkstra</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">length</span><span class="p">])</span>
+
+<span class="n">outFid</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><a class="reference download internal" href="_downloads/runDistances.py" download=""><code class="xref download docutils literal"><span class="pre">runDistances.py</span></code></a></p>
+<p>Now you need to write a script to assemble all of the results into one file.</p>
+
+
+
+
+</article>
+<article class="slide level-1" id="more-information">
+
+<h1>More information</h1>
+
+<ul class="simple">
+<li><a class="reference external" href="http://gridscheduler.sourceforge.net">Job submission docs</a></li>
+<li><a class="reference external" href="http://docs.oracle.com/cd/E24901_01/index.htm">Open Grid Scheduler</a></li>
+</ul>
+<p>Happy parallel processing!</p>
+
+
+
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

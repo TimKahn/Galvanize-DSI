@@ -1,0 +1,55 @@
+.. cnrs, created by ARichards
+
+CUDA
+===================
+
+CUDA and PyCuda - Python's interface to CUDA
+------------------------------------------------
+
+Here is the `tutorial <http://documen.tician.de/pycuda/tutorial.html>`_ from the documentation that I am rougly following.  
+
+What video card do I have?
+-----------------------------
+
+Enter the following into a terminal:
+
+.. code-block:: none
+		
+  ~$ lspci -v | grep VGA
+
+
+Tutorial example
+-----------------------
+
+:download:`PyCudaExample.py`
+
+
+Why use PyCuda or something like it instead of CUDA directly
+---------------------------------------------------------------
+
+   * maintainability
+   * simplicity of use
+   * already in the language of preference
+   * installation help
+
+Just for reference
+---------------------
+
+A CUDA version of matrix multiplication.  This is not PyCuda and I put this here just to have a pure C example.
+
+:download:`CudaMatrixMultiply.cu`
+
+.. code-block:: none
+
+   ~$ nvcc CudaMatrixMultiply.cu -o foo.out
+   ~$ ./foo.out'
+
+
+Contents
+---------------------------------------------
+
+   * :doc:`speedy-intro`
+   * :doc:`subprocessing`
+   * :doc:`multiprocessing`
+   * :doc:`cython`
+   * :doc:`pycuda`

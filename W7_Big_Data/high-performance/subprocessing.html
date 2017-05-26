@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Subprocessing &mdash; speedy-python</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="_static/single.css" type="text/css" />
+    
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/common.js"></script>
+    
+    <script type="text/javascript" src="_static/slides.js"></script>
+    <script type="text/javascript" src="_static/sync.js"></script>
+    <script type="text/javascript" src="_static/controller.js"></script>
+    <script type="text/javascript" src="_static/init.js"></script>
+    
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="speedy-python" href="index.html" />
+    <link rel="next" title="Multiprocessing" href="multiprocessing.html" />
+    <link rel="prev" title="Introduction" href="speedy-intro.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="slide level-1" id="subprocessing">
+
+<h1>Subprocessing</h1>
+
+
+
+
+
+</article>
+<article class="slide level-2" id="global-interpreter-lock-gil">
+
+<h2>Global Interpreter Lock (GIL)</h2>
+
+<p>The GIL restricts bytecode execution to a single core, making pure Python threads an ineffective tool for distributing CPU bound work across multiple cores.</p>
+<p>How do we get around this?</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="first docutils">
+<dt>use a parallel execution technique other than shared memory threading</dt>
+<dd><ul class="first last">
+<li><strong>multiprocessing</strong></li>
+<li><strong>subprocessing</strong></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>move parts of the application out into binary extension modules</li>
+</ul>
+</div></blockquote>
+<p><a class="reference external" href="http://python-notes.curiousefficiency.org/en/latest/python3/multicore_python.html">see blog for more</a></p>
+
+
+
+
+</article>
+<article class="slide level-2" id="the-great-circle-problem">
+
+<h2>The great circle problem</h2>
+
+<p>I will be re-using the <a class="reference external" href="http://mathworld.wolfram.com/GreatCircle.html">Great Circle</a> problem to
+illustrate several the different methods to speed up code.</p>
+<p>Basically, we are trying to calculate the shortest distance between two points on
+a sphere (i.e. the earth).</p>
+<a class="reference internal image-reference" href="_images/great-circle.png"><img alt="_images/great-circle.png" class="align-center" src="_images/great-circle.png" style="width: 184.29999999999998px; height: 184.29999999999998px;" /></a>
+
+
+
+
+</article>
+<article class="slide level-2" id="r-function">
+
+<h2>R function</h2>
+
+<div class="highlight-r"><div class="highlight"><pre><span></span>greatCircle <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>lon1<span class="p">,</span>lat1<span class="p">,</span>lon2<span class="p">,</span>lat2<span class="p">){</span>
+    radius <span class="o">&lt;-</span> <span class="m">3956</span> <span class="c1">#miles</span>
+    x <span class="o">&lt;-</span> <span class="kc">pi</span><span class="o">/</span><span class="m">180.0</span>
+    a <span class="o">&lt;-</span> <span class="p">(</span><span class="m">90.0</span><span class="o">-</span>lat1<span class="p">)</span><span class="o">*</span><span class="p">(</span>x<span class="p">)</span>
+    b <span class="o">&lt;-</span> <span class="p">(</span><span class="m">90.0</span><span class="o">-</span>lat2<span class="p">)</span><span class="o">*</span><span class="p">(</span>x<span class="p">)</span>
+    theta <span class="o">&lt;-</span> <span class="p">(</span>lon2<span class="o">-</span>lon1<span class="p">)</span><span class="o">*</span><span class="p">(</span>x<span class="p">)</span>
+    <span class="kt">c</span> <span class="o">&lt;-</span> <span class="kp">acos</span><span class="p">((</span><span class="kp">cos</span><span class="p">(</span>a<span class="p">)</span><span class="o">*</span><span class="kp">cos</span><span class="p">(</span>b<span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="kp">sin</span><span class="p">(</span>a<span class="p">)</span><span class="o">*</span><span class="kp">sin</span><span class="p">(</span>b<span class="p">)</span><span class="o">*</span><span class="kp">cos</span><span class="p">(</span>theta<span class="p">)))</span>
+    <span class="kr">return</span><span class="p">(</span>radius<span class="o">*</span><span class="kt">c</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-2" id="in-python">
+
+<h2>In Python</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">great_circle</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat1</span><span class="p">,</span><span class="n">lon2</span><span class="p">,</span><span class="n">lat2</span><span class="p">):</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="mi">3956</span> <span class="c1">#miles</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.0</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="mf">90.0</span><span class="o">-</span><span class="n">lat1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mf">90.0</span><span class="o">-</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon2</span><span class="o">-</span><span class="n">lon1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">((</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="o">+</span>
+                  <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">radius</span><span class="o">*</span><span class="n">c</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-2" id="how-far-is-it-from-machu-picchu-to-pikes-peak">
+
+<h2>How far is it from Machu Picchu to Pikes Peak?</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">GreatCircle</span> <span class="kn">import</span> <span class="n">great_circle</span>
+<span class="k">print</span><span class="p">(</span><span class="n">great_circle</span><span class="p">(</span><span class="o">-</span><span class="mi">13</span><span class="p">,</span><span class="mi">73</span><span class="p">,</span><span class="o">-</span><span class="mi">105</span><span class="p">,</span><span class="mi">38</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>And what about a million distances?</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1000000</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">360</span><span class="p">,</span><span class="mi">360</span><span class="p">,</span><span class="n">n</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then to loop through the matirx...</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">great_circle</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-2" id="what-can-we-do-to-speed-this-up">
+
+<h2>What can we do to speed this up?</h2>
+
+<p>Can you think of any tools that you might already have?</p>
+
+
+
+
+</article>
+<article class="slide level-2" id="numpy-is-fast-when-we-are-in-the-matrix-world">
+
+<h2>NumPy is fast when we are in the matrix world</h2>
+
+<p>It is generally inefficient to loop.  Use <a class="reference external" href="http://www.numpy.org">NumPy</a></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">great_circle_numpy</span><span class="p">(</span><span class="n">mat</span><span class="p">):</span>
+   <span class="n">radius</span> <span class="o">=</span> <span class="mi">3956</span>
+   <span class="n">x</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.0</span>
+   <span class="n">lon1</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+   <span class="n">lat1</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+   <span class="n">lon2</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>
+   <span class="n">lat2</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span>
+
+   <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="mf">90.0</span><span class="o">-</span><span class="n">lat1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+   <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mf">90.0</span><span class="o">-</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+   <span class="n">theta</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon2</span><span class="o">-</span><span class="n">lon1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+   <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cosh</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="o">+</span>
+               <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)))</span>
+   <span class="k">return</span> <span class="n">radius</span><span class="o">*</span><span class="n">c</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-2" id="run-it">
+
+<h2>Run it</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">GreatCircle</span> <span class="kn">import</span> <span class="n">great_circle_numpy</span>
+<span class="n">timeStart</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">great_circle_numpy</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="n">runTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">timeStart</span>
+<span class="k">print</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">runTime</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In R there are the apply functions, which improve speed where looping is concerned.</p>
+<p>Does you problem consist of only matrix operations?</p>
+
+
+
+
+</article>
+<article class="slide level-2" id="subprocess">
+
+<h2>Subprocess'</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="c1"># run R</span>
+<span class="n">timeStart</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;Rscript RunGreatCircle.R&#39;</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+<span class="n">stdOut</span><span class="p">,</span> <span class="n">stdErr</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+<span class="n">runTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">timeStart</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;R time&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">runTime</span><span class="p">)))</span>
+
+<span class="c1"># run python</span>
+<span class="n">timeStart</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;python RunGreatCircle.py&#39;</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+<span class="n">stdOut</span><span class="p">,</span> <span class="n">stdErr</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+<span class="n">runTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">timeStart</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Python time&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">runTime</span><span class="p">)))</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-2" id="what-about-in-r">
+
+<h2>What about in R?</h2>
+
+<div class="highlight-r"><div class="highlight"><pre><span></span><span class="kp">system</span><span class="p">(</span><span class="s">&quot;Rscript RunGreatCircle.R&quot;</span><span class="p">)</span>
+<span class="kp">system</span><span class="p">(</span><span class="s">&quot;python RunGreatCircle.py&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There are more controls from within the system command</p>
+<div class="highlight-r"><div class="highlight"><pre><span></span><span class="o">?</span><span class="kp">system</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-2" id="thinking-in-parallel-context">
+
+<h2>Thinking in parallel context</h2>
+
+<blockquote>
+<div><ol class="arabic simple">
+<li>Save the whole matrix as a file e.g. csv</li>
+<li>Break the file into wedges (1 for each core)</li>
+<li>Change the RunScript to accept options for begin, end and wedge (-b, -e, -w)</li>
+<li>Ensure the RunScript produces an outfile with an appropriate wedge id</li>
+<li>Run it</li>
+<li>Once finished reassemble all wedges into the full outfile.</li>
+</ol>
+</div></blockquote>
+<p><a class="reference download internal" href="_downloads/handle-args.py" download=""><code class="xref download docutils literal"><span class="pre">handle-args.py</span></code></a></p>
+
+
+
+
+</article>
+<article class="slide level-2" id="contents">
+
+<h2>Contents</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="speedy-intro.html"><span class="doc">Introduction</span></a></li>
+<li><a class="reference internal" href="#"><span class="doc">Subprocessing</span></a></li>
+<li><a class="reference internal" href="multiprocessing.html"><span class="doc">Multiprocessing</span></a></li>
+<li><a class="reference internal" href="cython.html"><span class="doc">Cython</span></a></li>
+<li><a class="reference internal" href="pycuda.html"><span class="doc">CUDA</span></a></li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

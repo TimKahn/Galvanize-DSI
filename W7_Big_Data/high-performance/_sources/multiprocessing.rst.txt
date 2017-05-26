@@ -1,0 +1,65 @@
+.. cnrs, created by ARichards
+
+
+Multiprocessing 
+=====================================
+
+
+In Python
+-------------
+
+This is a package in the standard python library.   Here is the `documentation <http://docs.python.org/2/library/multiprocessing.html>`_.  For some problems it can avoid the hassel of chunking you analysis into wedges and reassembling the parts.
+
+.. code-block:: python
+   
+   from multiprocessing import Pool, cpu_count
+   totalCores = cpu_count()
+   print totalCores
+
+
+From the documentation
+--------------------------
+
+.. code-block:: python
+
+   from multiprocessing import Pool
+
+   def f(x):
+       return x*x
+
+   pool = Pool(processes=4)              # start 4 worker processes
+   result = pool.apply_async(f, [10])    # evaluate asynchronously
+   print(result.get(timeout=1))          
+   print(pool.map(f, range(10)))         # prints "[0, 1, 4,..., 81]"
+
+Note that the methods of a pool should only ever be used by the process which created it.
+
+
+Running example
+----------------------
+
+.. literalinclude:: multiprocessingExample.py
+
+Threading
+---------------------------
+
+If you are looking for the same functionality but at a lower level see
+the `threading <module
+http://docs.python.org/2/library/threading.html>`_.
+
+Threading for subprocessing
+------------------------------
+
+Here is class shell that you can use to control a subprocess with threads.  Scroll to the bottom to see how to use it.
+
+:download:`RunSubprocess.py`
+
+Contents
+---------------------------------------------
+
+   * :doc:`speedy-intro`
+   * :doc:`subprocessing`
+   * :doc:`multiprocessing`
+   * :doc:`cython`
+   * :doc:`pycuda`
+

@@ -1,0 +1,136 @@
+.. galvanize, created by ARichards
+
+Introduction
+==============
+   
+Why run code in parallel?
+---------------------------
+
+   * Modern computers have multiple cores and `hyperthreading <https://en.wikipedia.org/wiki/Hyper-threading>`_
+   * Graphics processing units (GPUs) are your friend
+   * Many of the newest *i7* processors have 8 cores
+   * But we may also be suprised when we recode certain problems 
+
+When to go parallel
+--------------------------
+
+   * Sometimes it is difficult to make code more efficient otherwise
+   * Sometimes it is `embarrassingly parallel <http://en.wikipedia.org/wiki/Embarrassingly_parallel>`_
+   * Try to think about future development
+   * Sometimes we (think that we) only need to run the code once
+
+
+Saving your work as a pickle
+----------------------------------------
+
+
+.. code-block:: python
+
+   import cPickle,os
+   results = {'a':1,'b':range(10)}
+   results_pickle = 'foo.pickle'
+   tmp = open(results_pickle,'w')
+   cPickle.dump(results,tmp)
+   tmp.close()
+
+   tmp = open(results_pickle,'r')
+   loadedResults = cPickle.load(tmp)
+   tmp.close()
+
+Saving your work in NumPy
+----------------------------------------
+
+.. code-block:: python
+
+   import numpy as np
+
+   a = np.arange(10)
+   b = np.arange(12)
+   file_name = 'foo.npz'
+   args = {'a':a,'b':b}
+   np.savez_compressed(file_name,**args)
+
+   npz = np.load(file_name)
+   a = npz['a']
+   b = npz['b']
+
+There is also **np.save**, **np.savetxt**, and **np.savez** 
+
+   
+
+Cores or processors
+---------------------------------
+
+How many cores do I have?
+
+.. code-block:: bash
+
+   ~$ cat /proc/cpuinfo | awk '/^processor/{print $3}'
+
+.. code-block:: python
+
+   import multiprocessing
+   print(multiprocessing.cpu_count())
+
+What thoses cores are doing?
+
+.. code-block:: bash
+
+   ~$ sudo apt-get install sysstat
+   ~$ mpstat -P ALL 1
+
+Or just use **htop**
+   
+So if we have 32 cores... the time taken in (HH:MM:SS)
+----------------------------------------------------------
+
++----------------------------------+------------------------------+
+| 1 core                           | 32 cores                     |
++==================================+==============================+
+| 1 minute (60s)                   | 00:00:02                     |
++----------------------------------+------------------------------+
+| 1 hour (3600s)                   | 00:01:52                     |
++----------------------------------+------------------------------+
+| 1 Day (86400s)                   | 00:45:00                     |
++----------------------------------+------------------------------+
+| 1 Month (2628288s)               | 22:48:54                     |
++----------------------------------+------------------------------+
+| 1 Year (3.156e7s)                | 11 days, 09:45:00            |
++----------------------------------+------------------------------+
+
+Of course that is in an ideal world we have to consider read/write
+operations memory allocation and all the other overhead.
+
+It is worth noting that there is something known as `Amdahl's law
+<http://en.wikipedia.org/wiki/Amdahl%27s_law>`_ that constrains the
+maximum speed up of computing.
+
+Terminology
+-----------------------------------------
+
+   * **Multicore computing** - using multithreading and multiple cores
+   * **Symmetric multiprocessing** - two or more identical processors connected to a single unit of memory
+   * **Distributed computing** - processing elements are connected by a network
+   * **Cluster computing** - group of loosely coupled computers that work together (Beowulf)
+   * **Massive parallel** processing - many networked processors usually > 100.
+   * **Grid computing** - distributed computing but makes use of a middle layer to create a `super virtual computer`.
+
+Where to go for more
+-------------------------------
+
+   * `A helpful wiki about parallel processing in Python <http://wiki.python.org/moin/ParallelProcessing>`_
+   * `A talk about parallel computing in R (Luke Tierney) <http://homepage.stat.uiowa.edu/~luke/talks/uiowa03.pdf>`_   
+   * Juypter supports `interactive parallel computing <http://ipython.org/ipython-doc/stable/parallel/index.html>`_
+   * `Message Passing Interface (MPI) <http://en.wikipedia.org/wiki/Message_Passing_Interface>`_ (`mpi4py <http://mpi4py.scipy.org>`_ and `PyMPI <http://pympi.sourceforge.net>`_)
+   * `julia <http://julialang.org>`_ (`parallel julia <http://docs.julialang.org/en/release-0.5/manual/parallel-computing/>`_)
+   * `CUDA <https://developer.nvidia.com/what-cuda>`_
+   * `OpenCL <https://developer.nvidia.com/opencl>`_
+
+Contents     
+---------------------------------------------
+
+   * :doc:`speedy-intro`
+   * :doc:`subprocessing`
+   * :doc:`multiprocessing`
+   * :doc:`cython`
+   * :doc:`pycuda`

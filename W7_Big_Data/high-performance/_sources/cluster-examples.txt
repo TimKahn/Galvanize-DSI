@@ -1,0 +1,57 @@
+.. cnrs, created by ARichards
+
+HPC Environments
+===========================
+
+Simple example
+=====================
+
+Save the following file as `runtest.sh`
+
+.. literalinclude:: runtest.sh
+   :language: bash
+
+The first two lines setup the envrionment as a bash envronment.  The `-j` specifies that standard out and standard err are put together in the out file.
+The `-o` is the file path for the out file.  
+
+Replace your email and change the two file paths to be real ones.  
+Then in the same directory as `runtest.sh` save the following python script as `test.py`.
+
+.. literalinclude:: test.py
+   :language: python
+
+:download:`test.py`
+
+This is basically the standard hello world example.
+
+Finally, submit the job to the queue using
+
+.. code-block:: bash
+
+   qsub runtest.sh
+
+A more involved example
+============================
+
+This example uses python to generate and submit the bash scripts. 
+
+.. literalinclude:: submitDistancesScripts.py
+   :language: python
+
+:download:`submitDistancesScripts.py`
+
+.. literalinclude:: runDistances.py
+   :language: python
+
+:download:`runDistances.py`
+
+
+Now you need to write a script to assemble all of the results into one file.
+
+More information
+=========================
+
+* `Job submission docs <http://gridscheduler.sourceforge.net>`_
+* `Open Grid Scheduler <http://docs.oracle.com/cd/E24901_01/index.htm>`_
+
+Happy parallel processing!

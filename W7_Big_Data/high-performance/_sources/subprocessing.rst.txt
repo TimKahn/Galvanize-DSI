@@ -1,0 +1,197 @@
+.. galvanize, created by ARichards
+
+
+Subprocessing
+==============================
+
+Global Interpreter Lock (GIL)
+---------------------------------
+
+The GIL restricts bytecode execution to a single core, making pure Python threads an ineffective tool for distributing CPU bound work across multiple cores.
+
+How do we get around this?
+
+   * use a parallel execution technique other than shared memory threading
+      * **multiprocessing**
+      * **subprocessing** 
+   * move parts of the application out into binary extension modules
+
+`see blog for more <http://python-notes.curiousefficiency.org/en/latest/python3/multicore_python.html>`_
+     
+The great circle problem
+------------------------------
+
+I will be re-using the `Great Circle
+<http://mathworld.wolfram.com/GreatCircle.html>`_ problem to
+illustrate several the different methods to speed up code.
+
+Basically, we are trying to calculate the shortest distance between two points on
+a sphere (i.e. the earth).
+
+.. image:: /_static/great-circle.png
+   :scale: 95%
+   :align: center
+	      
+	   			 	   
+R function
+------------------------------
+
+.. code-block:: r
+
+  greatCircle <- function(lon1,lat1,lon2,lat2){
+      radius <- 3956 #miles
+      x <- pi/180.0
+      a <- (90.0-lat1)*(x)
+      b <- (90.0-lat2)*(x)
+      theta <- (lon2-lon1)*(x)
+      c <- acos((cos(a)*cos(b)) + (sin(a)*sin(b)*cos(theta)))
+      return(radius*c)
+  }
+
+
+In Python 
+---------------------
+
+.. code-block:: python
+
+  import math
+
+  def great_circle(lon1,lat1,lon2,lat2):
+      radius = 3956 #miles  
+      x = math.pi/180.0
+      a = (90.0-lat1)*(x)
+      b = (90.0-lat2)*(x)
+      theta = (lon2-lon1)*(x)
+      c = math.acos((math.cos(a)*math.cos(b)) +
+                    (math.sin(a)*math.sin(b)*math.cos(theta)))
+      return radius*c
+
+How far is it from Machu Picchu to Pikes Peak?
+----------------------------------------------------
+
+.. code-block:: python
+
+   from GreatCircle import great_circle
+   print(great_circle(-13,73,-105,38))
+
+And what about a million distances?
+
+.. code-block:: python
+		
+   import numpy as np 
+
+   n = 1000000
+   m = np.random.randint(-360,360,n*4).reshape(n,4)
+   
+Then to loop through the matirx...
+
+.. code-block:: python
+
+  for i in range(mat.shape[0]):
+      x = great_circle(mat[i,:])
+
+What can we do to speed this up?
+----------------------------------------------
+
+Can you think of any tools that you might already have?
+
+NumPy is fast when we are in the matrix world
+------------------------------------------------
+
+It is generally inefficient to loop.  Use `NumPy <http://www.numpy.org>`_ 
+
+.. code-block:: python
+
+   def great_circle_numpy(mat):
+      radius = 3956
+      x = math.pi/180.0
+      lon1 = mat[:,0]
+      lat1 = mat[:,1]
+      lon2 = mat[:,2]
+      lat2 = mat[:,3]
+
+      a = (90.0-lat1)*(x)
+      b = (90.0-lat2)*(x)
+      theta = (lon2-lon1)*(x)
+      c = np.cosh((np.cos(a)*np.cos(b)) +
+                  (np.sin(a)*np.sin(b)*np.cos(theta)))
+      return radius*c
+
+Run it      
+----------------------
+
+.. code-block:: python
+
+    from GreatCircle import great_circle_numpy
+    timeStart = time.time()
+    c = great_circle_numpy(mat)
+    runTime = time.time() - timeStart
+    print time.strftime('%H:%M:%S', time.gmtime(runTime))
+
+    
+In R there are the apply functions, which improve speed where looping is concerned.
+
+Does you problem consist of only matrix operations?
+
+Subprocess'
+-----------------------------------
+
+.. code-block:: python
+
+   import subprocess
+
+   # run R
+   timeStart = time.time()
+   cmd = 'Rscript RunGreatCircle.R'
+   proc = subprocess.Popen(cmd,shell=True,stderr=subprocess.PIPE,
+                           stdout=subprocess.PIPE)
+   stdOut, stdErr = proc.communicate()
+   runTime = time.time() - timeStart
+   print("R time", time.strftime('%H:%M:%S', time.gmtime(runTime)))
+
+   # run python
+   timeStart = time.time()
+   cmd = 'python RunGreatCircle.py'
+   proc = subprocess.Popen(cmd,shell=True,stderr=subprocess.PIPE,
+                           stdout=subprocess.PIPE)        
+   stdOut, stdErr = proc.communicate()
+   runTime = time.time() - timeStart
+   print("Python time", time.strftime('%H:%M:%S', time.gmtime(runTime)))
+
+What about in R?
+---------------------
+
+.. code-block:: r
+
+   system("Rscript RunGreatCircle.R")
+   system("python RunGreatCircle.py")
+
+There are more controls from within the system command
+
+.. code-block:: r
+
+   ?system
+  
+
+  
+Thinking in parallel context
+-----------------------------------
+
+   1. Save the whole matrix as a file e.g. csv
+   2. Break the file into wedges (1 for each core)
+   3. Change the RunScript to accept options for begin, end and wedge (-b, -e, -w)
+   4. Ensure the RunScript produces an outfile with an appropriate wedge id
+   5. Run it
+   6. Once finished reassemble all wedges into the full outfile.
+
+:download:`handle-args.py`
+      
+Contents
+---------------------------------------------
+
+   * :doc:`speedy-intro`
+   * :doc:`subprocessing`
+   * :doc:`multiprocessing`
+   * :doc:`cython`
+   * :doc:`pycuda`
+	    

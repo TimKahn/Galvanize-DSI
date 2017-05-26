@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue May 23 14:52:19 MDT 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-015c-3714-f6cc-000011839968 
+on database directory /home/tim/Galvanize-DSI/W7_Big_Data/spark-materials/spark-materials/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@333e913a 
+Loaded from file:/home/tim/spark-2.1.0-bin-hadoop2.7/jars/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_131-b11
+user.dir=/home/tim/Galvanize-DSI/W7_Big_Data/spark-materials/spark-materials
+os.name=Linux
+os.arch=amd64
+os.version=4.4.0-75-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

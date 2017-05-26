@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CUDA &mdash; speedy-python</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="_static/single.css" type="text/css" />
+    
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/common.js"></script>
+    
+    <script type="text/javascript" src="_static/slides.js"></script>
+    <script type="text/javascript" src="_static/sync.js"></script>
+    <script type="text/javascript" src="_static/controller.js"></script>
+    <script type="text/javascript" src="_static/init.js"></script>
+    
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="speedy-python" href="index.html" />
+    <link rel="prev" title="Cython" href="cython.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="slide level-1" id="cuda">
+
+<h1>CUDA</h1>
+
+
+
+
+
+</article>
+<article class="slide level-2" id="cuda-and-pycuda-python-s-interface-to-cuda">
+
+<h2>CUDA and PyCuda - Python's interface to CUDA</h2>
+
+<p>Here is the <a class="reference external" href="http://documen.tician.de/pycuda/tutorial.html">tutorial</a> from the documentation that I am rougly following.</p>
+
+
+
+
+</article>
+<article class="slide level-2" id="what-video-card-do-i-have">
+
+<h2>What video card do I have?</h2>
+
+<p>Enter the following into a terminal:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>~$ lspci -v | grep VGA
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-2" id="tutorial-example">
+
+<h2>Tutorial example</h2>
+
+<p><a class="reference download internal" href="_downloads/PyCudaExample.py" download=""><code class="xref download docutils literal"><span class="pre">PyCudaExample.py</span></code></a></p>
+
+
+
+
+</article>
+<article class="slide level-2" id="why-use-pycuda-or-something-like-it-instead-of-cuda-directly">
+
+<h2>Why use PyCuda or something like it instead of CUDA directly</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li>maintainability</li>
+<li>simplicity of use</li>
+<li>already in the language of preference</li>
+<li>installation help</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="slide level-2" id="just-for-reference">
+
+<h2>Just for reference</h2>
+
+<p>A CUDA version of matrix multiplication.  This is not PyCuda and I put this here just to have a pure C example.</p>
+<p><a class="reference download internal" href="_downloads/CudaMatrixMultiply.cu" download=""><code class="xref download docutils literal"><span class="pre">CudaMatrixMultiply.cu</span></code></a></p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>~$ nvcc CudaMatrixMultiply.cu -o foo.out
+~$ ./foo.out&#39;
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-2" id="contents">
+
+<h2>Contents</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="speedy-intro.html"><span class="doc">Introduction</span></a></li>
+<li><a class="reference internal" href="subprocessing.html"><span class="doc">Subprocessing</span></a></li>
+<li><a class="reference internal" href="multiprocessing.html"><span class="doc">Multiprocessing</span></a></li>
+<li><a class="reference internal" href="cython.html"><span class="doc">Cython</span></a></li>
+<li><a class="reference internal" href="#"><span class="doc">CUDA</span></a></li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction &mdash; speedy-python</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="_static/single.css" type="text/css" />
+    
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/common.js"></script>
+    
+    <script type="text/javascript" src="_static/slides.js"></script>
+    <script type="text/javascript" src="_static/sync.js"></script>
+    <script type="text/javascript" src="_static/controller.js"></script>
+    <script type="text/javascript" src="_static/init.js"></script>
+    
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="speedy-python" href="index.html" />
+    <link rel="next" title="Subprocessing" href="subprocessing.html" />
+    <link rel="prev" title="speedy-python" href="index.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="slide level-1" id="introduction">
+
+<h1>Introduction</h1>
+
+
+
+
+
+</article>
+<article class="slide level-2" id="why-run-code-in-parallel">
+
+<h2>Why run code in parallel?</h2>
+
+<blockquote>
+<div><ul>
+<li><p class="first">Modern computers have multiple cores and <a class="reference external" href="https://en.wikipedia.org/wiki/Hyper-threading">hyperthreading</a></p>
+</li>
+<li><p class="first">Graphics processing units (GPUs) are your friend</p>
+</li>
+<li><p class="first">Many of the newest <em>i7</em> processors have 8 cores</p>
+</li>
+<li><p class="first">But we may also be suprised when we recode certain problems</p>
+</li>
+<li><dl class="first docutils">
+<dt>When we call a python script</dt>
+<dd><div class="first last highlight-bash"><div class="highlight"><pre><span></span>python run.py
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="slide level-2" id="when-to-go-parallel">
+
+<h2>When to go parallel</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li>Sometimes it is difficult to make code more efficient otherwise</li>
+<li>Sometimes it is <a class="reference external" href="http://en.wikipedia.org/wiki/Embarrassingly_parallel">embarrassingly parallel</a></li>
+<li>Try to think about future development</li>
+<li>Sometimes we (think that we) only need to run the code once</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="slide level-2" id="saving-your-work-as-a-pickle">
+
+<h2>Saving your work as a pickle</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cPickle</span><span class="o">,</span><span class="nn">os</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
+<span class="n">results_pickle</span> <span class="o">=</span> <span class="s1">&#39;foo.pickle&#39;</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">results_pickle</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">cPickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">results</span><span class="p">,</span><span class="n">tmp</span><span class="p">)</span>
+<span class="n">tmp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">tmp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">results_pickle</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">loadedResults</span> <span class="o">=</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+<span class="n">tmp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-2" id="saving-your-work-in-numpy">
+
+<h2>Saving your work in NumPy</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;foo.npz&#39;</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="n">a</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="n">b</span><span class="p">}</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savez_compressed</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+<span class="n">npz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">npz</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">npz</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>There is also <strong>np.save</strong>, <strong>np.savetxt</strong>, and <strong>np.savez</strong></p>
+
+
+
+
+</article>
+<article class="slide level-2" id="cores-or-processors">
+
+<h2>Cores or processors</h2>
+
+<p>How many cores do I have?</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>~$ cat /proc/cpuinfo <span class="p">|</span> awk <span class="s1">&#39;/^processor/{print $3}&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="k">print</span><span class="p">(</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>What thoses cores are doing?</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>~$ sudo apt-get install sysstat
+~$ mpstat -P ALL <span class="m">1</span>
+</pre></div>
+</div>
+<p>Or just use <strong>htop</strong></p>
+
+
+
+
+</article>
+<article class="slide level-2" id="so-if-we-have-32-cores-the-time-taken-in-hh-mm-ss">
+
+<h2>So if we have 32 cores... the time taken in (HH:MM:SS)</h2>
+
+<table border="1" class="docutils">
+<colgroup>
+<col width="53%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">1 core</th>
+<th class="head">32 cores</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1 minute (60s)</td>
+<td>00:00:02</td>
+</tr>
+<tr class="row-odd"><td>1 hour (3600s)</td>
+<td>00:01:52</td>
+</tr>
+<tr class="row-even"><td>1 Day (86400s)</td>
+<td>00:45:00</td>
+</tr>
+<tr class="row-odd"><td>1 Month (2628288s)</td>
+<td>22:48:54</td>
+</tr>
+<tr class="row-even"><td>1 Year (3.156e7s)</td>
+<td>11 days, 09:45:00</td>
+</tr>
+</tbody>
+</table>
+<p>Of course that is in an ideal world we have to consider read/write
+operations memory allocation and all the other overhead.</p>
+<p>It is worth noting that there is something known as <a class="reference external" href="http://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl's law</a> that constrains the
+maximum speed up of computing.</p>
+
+
+
+
+</article>
+<article class="slide level-2" id="terminology">
+
+<h2>Terminology</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li><strong>Multicore computing</strong> - using multithreading and multiple cores</li>
+<li><strong>Symmetric multiprocessing</strong> - two or more identical processors connected to a single unit of memory</li>
+<li><strong>Distributed computing</strong> - processing elements are connected by a network</li>
+<li><strong>Cluster computing</strong> - group of loosely coupled computers that work together (Beowulf)</li>
+<li><strong>Massive parallel</strong> processing - many networked processors usually &gt; 100.</li>
+<li><strong>Grid computing</strong> - distributed computing but makes use of a middle layer to create a <cite>super virtual computer</cite>.</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="slide level-2" id="where-to-go-for-more">
+
+<h2>Where to go for more</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://wiki.python.org/moin/ParallelProcessing">A helpful wiki about parallel processing in Python</a></li>
+<li><a class="reference external" href="http://homepage.stat.uiowa.edu/~luke/talks/uiowa03.pdf">A talk about parallel computing in R (Luke Tierney)</a></li>
+<li>Juypter supports <a class="reference external" href="http://ipython.org/ipython-doc/stable/parallel/index.html">interactive parallel computing</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Message_Passing_Interface">Message Passing Interface (MPI)</a> (<a class="reference external" href="http://mpi4py.scipy.org">mpi4py</a> and <a class="reference external" href="http://pympi.sourceforge.net">PyMPI</a>)</li>
+<li><a class="reference external" href="http://julialang.org">julia</a> (<a class="reference external" href="http://docs.julialang.org/en/release-0.5/manual/parallel-computing/">parallel julia</a>)</li>
+<li><a class="reference external" href="https://developer.nvidia.com/what-cuda">CUDA</a></li>
+<li><a class="reference external" href="https://developer.nvidia.com/opencl">OpenCL</a></li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="slide level-2" id="contents">
+
+<h2>Contents</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#"><span class="doc">Introduction</span></a></li>
+<li><a class="reference internal" href="subprocessing.html"><span class="doc">Subprocessing</span></a></li>
+<li><a class="reference internal" href="multiprocessing.html"><span class="doc">Multiprocessing</span></a></li>
+<li><a class="reference internal" href="cython.html"><span class="doc">Cython</span></a></li>
+<li><a class="reference internal" href="pycuda.html"><span class="doc">CUDA</span></a></li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

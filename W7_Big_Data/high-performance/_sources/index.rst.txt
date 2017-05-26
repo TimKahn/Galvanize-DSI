@@ -1,0 +1,24 @@
+
+.. speedy-python slides file, created by
+   hieroglyph-quickstart on Mon Oct 17 14:48:38 2016.
+
+
+===============   
+speedy-python
+===============
+
+Topics
+
+.. toctree::
+   :maxdepth: 1
+
+   speedy-intro
+   subprocessing
+   multiprocessing
+   cython
+   pycuda
+
+
+
+
+	      
