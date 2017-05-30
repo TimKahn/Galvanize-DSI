@@ -1,0 +1,27 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+
+  <title>DSI Text Classifier</title>
+
+  <meta name="description" content="The Galvanize DSI Text Classifier">
+  <meta name="author" content="DSI Instructor">
+
+</head>
+
+<body>
+
+  <h1>Submit Your Text</h1>
+  <p>Paste your articles text into the input box below, and click the <span>Classify</span> button to predict your article's classification.</p>
+
+  <form action="/predict" method='POST' >
+      <textarea name="article_body", 
+                rows="12", cols="60"></textarea>
+      <button type="submit">Classify</button> 
+  </form>
+
+</body>
+</html>

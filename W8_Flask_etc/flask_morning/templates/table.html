@@ -1,0 +1,34 @@
+
+<html>
+<head>
+<!-- CSS style -->
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+}
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
+}
+</style>
+</head>
+<body>
+<table class="center">
+  <thead>
+    <th>x</th>
+    <th>y</th>
+  </thead>
+  <tbody>
+    <!-- Here is where the data passed into the template gets inserted -->
+    {% for x, y in data %}
+      <tr>
+        <td>{{ x }}</td>
+        <td>{{ y }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
