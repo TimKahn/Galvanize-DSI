@@ -21,5 +21,5 @@ if __name__ == '__main__':
     hits = results['hits']
     for prop in range(len(hits)):
         print('\n---- {} ----\n'.format(hits[prop]['headline']))
-        #print(hits[prop]['geography'])
-        pprint(hits[prop])
+        print(hits[prop]['geography'])
+        #pprint(hits[prop])
