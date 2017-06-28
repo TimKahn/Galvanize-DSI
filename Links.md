@@ -14,6 +14,7 @@
 
 ### plotting
 * https://galvanizeopensource.github.io/stats-shortcourse/probability-distributions.html
+* https://medium.com/@plotlygraphs/introducing-dash-5ecf7191b503
 
 ### scipy
 * from terminal: use `pydoc scipy.stats.gamma` (similar for other distributions) for better scipy documentation!!!

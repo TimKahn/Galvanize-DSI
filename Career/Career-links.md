@@ -11,5 +11,8 @@ https://drive.google.com/drive/folders/0ByiB4jbEp4BKUWwtMjN3bHY3Z3M
 * Cover letters:
 https://docs.google.com/presentation/d/1kG-3CjLbSq4WuxM9NRekW5Witu16467VIl4D_1Z9jaI/edit?usp=sharing
 
+
 # Links
-* https://www.themuse.com/advice/31-attentiongrabbing-cover-letter-examples
+* Fun cover letters: https://www.themuse.com/advice/31-attentiongrabbing-cover-letter-examples
+* Find relevant e-mail addresses: https://hunter.io/
+* Interview tracker: https://docs.google.com/spreadsheets/d/1_ot99Vjvak0CbTlcTaJqqNj9H_JYqZyjbVvRsLjm24c/edit?usp=sharing
