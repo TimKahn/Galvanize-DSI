@@ -1,6 +1,10 @@
 # Week 1 etc. - fundamentals
+### general data science
+* http://cs229.stanford.edu/notes/cs229-notes1.pdf
+
 ### general python resources
 * https://awesome-python.com/
+* http://www.regular-expressions.info/
 
 ### numpy
 * https://github.com/sallamander/just-enough/blob/master/numpy.md
