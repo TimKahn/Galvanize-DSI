@@ -1,8 +1,12 @@
+# Post-course links
+### Big Data
+* https://medium.com/@ageitgey/quick-tip-speed-up-your-python-data-processing-scripts-with-process-pools-cf275350163a
+
 # Week 1 etc. - fundamentals
 ### general data science
 * http://cs229.stanford.edu/notes/cs229-notes1.pdf
 
-### general python resources
+### general python
 * https://awesome-python.com/
 * http://www.regular-expressions.info/
 
